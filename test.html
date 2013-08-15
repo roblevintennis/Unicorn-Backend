@@ -1,9 +1,9 @@
 <html>
     <head>
         <title>jsonp test</title>
-        <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>      
+        <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
         <script type="text/javascript">
-            $(function(){               
+            $(function(){
                 $('#testlink').click(function(e){
                     e.preventDefault();
                     var url = 'http://localhost:5000/build?callback=?';
@@ -26,6 +26,6 @@
         </ol>
         <p>Essentially, all we care about is pushing up the user's choices, generating a correct _options partial, and then generating the correct buttons.css which, at this point in the process, can be a big string in the jsonp response</p>
         <p>Once we've got the css back as a string, we can just add that as a file using the zip.js library to generate a zip file back on the gh-pages site using stuff statically defined in the ./Buttons directory (sort of like you already have in the gh-pages branch ./Buttons directory); but we add the dynamically generated buttons.css</p>
-        <p><a href="#" id="testlink">Big fat test</a></p>    
+        <p><a href="#" id="testlink">Big fat test</a></p>
     </body>
 </html>
