@@ -1,9 +1,6 @@
-$button_actions: 
-('primary' blue #fff) ('action' green #fff) ('highlight' #F18D05 #FFF) ('caution' #E54028 #FFF) ('royal' #87318C #FFF) ('silly' pink #fff) ;
-$button_styles: 
-'rounded' 'pill' 'circle' ;
-$button_sizes: 
-'large' 'small' 'tiny' ;
+$button_actions: ('primary' blue #fff) ('action' green #fff) ('highlight' #F18D05 #FFF) ('caution' #E54028 #FFF) ('royal' #87318C #FFF) ('silly' pink #fff) ;
+$button_styles: 'rounded' 'pill' 'circle' ;
+$button_sizes: 'large' 'small' 'tiny' ;
 $namespace: ".button";
 $glow_namespace: ".glow";
 $glow_color: #2c9adb;

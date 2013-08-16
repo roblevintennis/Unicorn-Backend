@@ -114,7 +114,7 @@ $dropdown-link-hover-background: #3c6ab9;
         // Fallback
         buttonActions = " ('primary' #00A1CB #FFF) ('action' #7db500 #FFF) ('highlight' #F18D05 #FFF)('caution' #E54028 #FFF) ('royal' #87318C #FFF);";
     }
-    css.push('$button_actions: ', buttonActions);
+    css.push('$button_actions: ' + buttonActions);
 
     var buttonStyles = '';
     var reqButtonStyles = request.query['$button_styles'];
@@ -127,7 +127,7 @@ $dropdown-link-hover-background: #3c6ab9;
         // Fallback
         buttonStyles = " 'rounded' 'pill' 'circle';";
     }
-    css.push('$button_styles: ', buttonStyles);
+    css.push('$button_styles: ' + buttonStyles);
 
     var buttonSizes = '';
     var reqButtonSizes = request.query['$button_sizes'];
@@ -140,7 +140,7 @@ $dropdown-link-hover-background: #3c6ab9;
         // Fallback
         buttonSizes = " 'large' 'small' 'tiny';";
     }
-    css.push('$button_sizes: ', buttonSizes);
+    css.push('$button_sizes: ' + buttonSizes);
 
     css.push('$namespace: "' + namespace + '";')
     css.push('$glow_namespace: "' + glowNamespace + '";');
