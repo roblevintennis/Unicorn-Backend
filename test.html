@@ -2,20 +2,22 @@
     <head>
         <title>jsonp test</title>
         <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
         <script type="text/javascript">
-            $(function(){
-                $('#testlink').click(function(e){
-                    e.preventDefault();
-                    var url = 'http://localhost:5000/build?callback=?';
-                    var options= {
-                        primary_color: "blue",
-                        secondary_color: "#abcabc"
-                    };
-                    $.getJSON(url, options, function(data){
-                        alert(JSON.stringify(data));
-                    });
-                });
-            });
+            // $(function(){
+            //     $('#testlink').click(function(e){
+            //         e.preventDefault();
+            //         var url = 'http://localhost:5000/build?callback=?';
+            //         var options= {
+            //             primary_color: "blue",
+            //             secondary_color: "#abcabc"
+            //         };
+            //         $.getJSON(url, options, function(data){
+            //             alert(JSON.stringify(data));
+            //         });
+            //     });
+            // });
         </script>
     </head>
     <body>
@@ -26,6 +28,115 @@
         </ol>
         <p>Essentially, all we care about is pushing up the user's choices, generating a correct _options partial, and then generating the correct buttons.css which, at this point in the process, can be a big string in the jsonp response</p>
         <p>Once we've got the css back as a string, we can just add that as a file using the zip.js library to generate a zip file back on the gh-pages site using stuff statically defined in the ./Buttons directory (sort of like you already have in the gh-pages branch ./Buttons directory); but we add the dynamically generated buttons.css</p>
-        <p><a href="#" id="testlink">Big fat test</a></p>
+        <p><a href="#" id="testlink">Mutate Buttons Model (forces a backbone.sync)</a></p>
+
+    <script type="text/javascript">
+
+    $(function(){
+        var JsonpModel = Backbone.Model.extend({
+            /**
+             * "sub-classes" of JsonpModel must override this
+             * @type {String}
+             */
+            type: null,
+
+            url: function() {
+                return 'http://localhost:5000/build';
+            },
+            //     $('#testlink').click(function(e){
+            //         e.preventDefault();
+            //         var url = 'http://localhost:5000/build?callback=?';
+            //         var options= {
+            //             primary_color: "blue",
+            //             secondary_color: "#abcabc"
+            //         };
+            //         $.getJSON(url, options, function(data){
+            //             alert(JSON.stringify(data));
+            //         });
+            //     });
+            //
+
+            sync: function(method, model, options) {
+                debugger;
+                var url = model.url()+"?callback=?";
+                var data = this.toJSON();
+                console.log("URL: ", url);
+
+                var params = _.extend({
+                  type: 'GET',
+                  dataType: 'jsonp',
+                  data: data,
+                  url: url
+                  // processData: false
+                }, options);
+
+                // Make the request.
+                return $.ajax(params);
+            },
+
+            parse: function(response) {
+                debugger;
+                // parse can be invoked for fetch and save, in case of save it can be undefined so check before using
+                if (response) {
+                    if (response.success) {
+                        return {css: response.css};
+                        // TODO: We'll partition the css with <module_type> so we can potentially have css.buttons, css.grids etc.
+                        // return {css: response.css[this.type]};
+                    }
+                }
+            }
+        });
+
+        var Buttons = JsonpModel.extend({
+            type: 'buttons',
+            defaults: {
+                '$namespace': '.button',
+                '$glow_namespace': '.glow',
+                '$glow_color': '#2c9adb',
+                '$bgcolor': '#EEE',
+                '$height': '32px',
+                '$font-color': '#666',
+                '$font-size': '14px',
+                '$font-weight': '300',
+                '$font-family': "\"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, Arial, \"Lucida Grande\", sans-serif",
+                '$dropdown-background': '#fcfcfc',
+                '$dropdown-link-color': '#333',
+                '$dropdown-link-hover': '#FFF',
+                '$dropdown-link-hover-background': '#3c6ab9',
+                '$button_actions': {
+                    'primary': '#00A1CB #FFF',
+                    'action': '#7db500 #FFF',
+                    'highlight': '#F18D05 #FFF',
+                    'caution': '#E54028 #FFF',
+                    'royal': '#87318C #FFF'
+                    // ... define more as you please
+                },
+                '$button_styles': ['rounded', 'pill', 'circle'],
+                '$button_sizes': ['large', 'small', 'tiny'],
+                '$circle-size': '120px'
+            }
+        });
+        var buttons = new Buttons();
+
+        // The idea is we could define additional "modules" in
+        // the same way; for example for Grids:
+        // var Grids = JsonpModel.extend({
+        //     type: 'grids'
+        //     defaults: ...
+        // });
+
+        // When we click the testlink we mutate the backbone
+        // model causing a jsonp sync so we can test this out
+        $('#testlink').click(function(e) {
+            var actions = buttons.get('$button_actions');
+            actions.primary = 'blue #fff';
+            actions.action = 'green #fff';
+            actions.silly = 'pink #fff';
+            buttons.set('$button_actions', actions);
+            buttons.save();
+        });
+
+    });
+    </script>
     </body>
 </html>
