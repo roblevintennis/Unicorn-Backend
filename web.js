@@ -1,6 +1,5 @@
 /*jshint multistr: true */
 var express = require('express'),
-    // compass = require('node-compass'),
     path = require('path'),
     fs = require('fs'),
     exec = require('child_process').exec,
@@ -23,10 +22,12 @@ app.enable('jsonp callback');
 
 //TODO: These are from docs ... rework later
 function logErrors(err, req, res, next) {
+    'use strict';
     console.error(err.stack);
     next(err);
 }
 function clientErrorHandler(err, req, res, next) {
+    'use strict';
     if (req.xhr) {
         res.send(500, { error: 'Something blew up!' });
     } else {
@@ -34,6 +35,7 @@ function clientErrorHandler(err, req, res, next) {
     }
 }
 function errorHandler(err, req, res, next) {
+    'use strict';
     res.status(500);
     res.render('error', { error: err });
 }
@@ -58,33 +60,8 @@ function getOptionsBoilerPlate(moreRulesArray) {
 }
 
 function generateOptionsFromRequest(request) {
-
-console.log("QUERY: ");
-console.dir(request.query);
-
-/*
-$namespace: '.button'; //prefix for all classes
-$glow_namespace: '.glow';
-$glow_color: #2c9adb;
-$bgcolor: #EEE;
-$height: 32px;
-$font-color: #666;
-$font-size: 14px;
-$font-weight: 300;
-$font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-$button_actions: ('primary' #00A1CB #FFF) ('action' #7db500 #FFF) ('highlight' #F18D05 #FFF)('caution' #E54028 #FFF) ('royal' #87318C #FFF);
-$button_styles: 'rounded' 'pill' 'circle';
-$button_sizes: 'large' 'small' 'tiny';
-$circle-size: 120px; //radius for circle buttons, circles only have one size
-$dropdown-background: #fcfcfc;
-$dropdown-link-color: #333;
-$dropdown-link-hover: #FFF;
-$dropdown-link-hover-background: #3c6ab9;
-*/
+    'use strict';
     var css = [];
-    // Overly optimistic assumption that all properties are sent.
-    // But since we use backbone defaults we should be good but
-    // we fallback anyway :)
     var namespace = request.query['$namespace'] || 'button';
     var glowNamespace = request.query['$glow_namespace'] || '.glow';
     var glowColor = request.query['$glow_color'] || '#2c9adb';
@@ -101,7 +78,6 @@ $dropdown-link-hover-background: #3c6ab9;
     var dropdownLinkHover = request.query['$dropdown-link-hover'] || '#fff';
     var dropdownLinkHoverBackground = request.query['$dropdown-link-hover-background'] || '#3c6ab9';
 
-    // $button_actions: ('primary' #00A1CB #FFF) ('action' #7db500 #FFF) ('highlight' #F18D05 #FFF)('caution' #E54028 #FFF) ('royal' #87318C #FFF);
     var buttonActions = '';
     var reqButtonActions = request.query['$button_actions'];
     if (reqButtonActions) {
@@ -162,8 +138,6 @@ $dropdown-link-hover-background: #3c6ab9;
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
     'use strict';
-    // console.log("Dumping request.query...");
-    // console.dir(request.query);
     if (!request.query['$button_actions']) {
         next(new Error('Server no comprende...probably missing required http param'));
     }
@@ -193,16 +167,12 @@ function createOptionsMiddleware(request, response, next) {
 function compassCompileMiddleware(request, response, next) {
     'use strict';
     console.log("In compassCompileMiddleware...");
-    // Now read back in the generated buttons.css file
-
-    // compass compile options
     var sassDir = path.join(__dirname, 'scss');
     var cssDir = path.join(__dirname, 'css');
     var outputStyle = 'nested';
     var options = ' --sass-dir '+sassDir+' --css-dir '+cssDir+' --force --output-style '+outputStyle;
     var cmd = "compass compile" + options;
 
-    console.log("Before exec'ing compass compile...");
     child = exec(cmd, function (err, stdout, stderr) {
         var cssPath = path.resolve('.', 'css/buttons.css');
         if (err) {
@@ -215,7 +185,6 @@ function compassCompileMiddleware(request, response, next) {
                     console.log(err);
                     next(new Error("Issue reading back buttons.css"));
                 }
-                console.log("buttons.css read: ", data);
                 request.buttonsCss = {css: data};
                 next();
             });
@@ -231,13 +200,7 @@ var mw = [createOptionsMiddleware, compassCompileMiddleware];
 app.get('/build', mw, function(request, response) {
     'use strict';
     console.log('GOT IN /build route...');
-    // compass middleware should have already compiled our scss at this point
-    // next we need to read generated buttons.css in to a string
-    // TODO: getButtonsCss();
-    //
-    // here we'll output something like:
     response.jsonp(request.buttonsCss)
-    // response.jsonp(request.cssObj);//TODO:This will go away with above
 });
 
 var port = process.env.PORT || 5000;

@@ -4,34 +4,19 @@
         <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
-        <script type="text/javascript">
-            // $(function(){
-            //     $('#testlink').click(function(e){
-            //         e.preventDefault();
-            //         var url = 'http://localhost:5000/build?callback=?';
-            //         var options= {
-            //             primary_color: "blue",
-            //             secondary_color: "#abcabc"
-            //         };
-            //         $.getJSON(url, options, function(data){
-            //             alert(JSON.stringify(data));
-            //         });
-            //     });
-            // });
-        </script>
     </head>
     <body>
         <h1>Strategy</h1>
         <ol>
-            <li>We use jsonp probably via something like jQuery.getJSON</li>
-            <li>This could simply return the compiled buttons.css in json like:<br><pre>{css: <...the buttons.css as a string>}</pre></li>
+            <li>We set up Backbone model to use jsonp</li>
+            <li>The jsonp GET has user's choices in a backbone model</li>
+            <li>Server generates _options partial</li>
+            <li>Server does a <pre>compass compile --sass-dir /path/to/scss --css-dir /path/to/css --force</pre>generating our buttons.css</li>
+            <li>Server then returns this buttons.css as a string in the jsonp response</li>
         </ol>
-        <p>Essentially, all we care about is pushing up the user's choices, generating a correct _options partial, and then generating the correct buttons.css which, at this point in the process, can be a big string in the jsonp response</p>
-        <p>Once we've got the css back as a string, we can just add that as a file using the zip.js library to generate a zip file back on the gh-pages site using stuff statically defined in the ./Buttons directory (sort of like you already have in the gh-pages branch ./Buttons directory); but we add the dynamically generated buttons.css</p>
+        <p><strong>You should be able to see this by breaking on the parse method and inspecting the response object</strong></p>
         <p><a href="#" id="testlink">Mutate Buttons Model (forces a backbone.sync)</a></p>
-
     <script type="text/javascript">
-
     $(function(){
         var JsonpModel = Backbone.Model.extend({
             /**
@@ -39,25 +24,11 @@
              * @type {String}
              */
             type: null,
-
             url: function() {
+                // return 'http://options-compiler.herokuapp.com/build';
                 return 'http://localhost:5000/build';
             },
-            //     $('#testlink').click(function(e){
-            //         e.preventDefault();
-            //         var url = 'http://localhost:5000/build?callback=?';
-            //         var options= {
-            //             primary_color: "blue",
-            //             secondary_color: "#abcabc"
-            //         };
-            //         $.getJSON(url, options, function(data){
-            //             alert(JSON.stringify(data));
-            //         });
-            //     });
-            //
-
             sync: function(method, model, options) {
-                debugger;
                 var url = model.url()+"?callback=?";
                 var data = this.toJSON();
                 console.log("URL: ", url);
@@ -73,12 +44,10 @@
                 // Make the request.
                 return $.ajax(params);
             },
-
             parse: function(response) {
-                debugger;
                 // parse can be invoked for fetch and save, in case of save it can be undefined so check before using
                 if (response) {
-                    if (response.success) {
+                    if (response.css) {
                         return {css: response.css};
                         // TODO: We'll partition the css with <module_type> so we can potentially have css.buttons, css.grids etc.
                         // return {css: response.css[this.type]};
@@ -118,24 +87,26 @@
         });
         var buttons = new Buttons();
 
-        // The idea is we could define additional "modules" in
-        // the same way; for example for Grids:
-        // var Grids = JsonpModel.extend({
-        //     type: 'grids'
-        //     defaults: ...
-        // });
+        // Idea is we can define additional "modules" in same way; e.g. for Grids:
+        // var Grids = JsonpModel.extend({ type: 'grids' .... });
 
         // When we click the testlink we mutate the backbone
         // model causing a jsonp sync so we can test this out
         $('#testlink').click(function(e) {
+            // Set some custom properties on our buttons _options
             var actions = buttons.get('$button_actions');
             actions.primary = 'blue #fff';
             actions.action = 'green #fff';
             actions.silly = 'pink #fff';
-            buttons.set('$button_actions', actions);
+            buttons.set({
+                '$button_actions': actions,
+                '$namespace': 'big-ole-butts',
+                '$font-color': '#444'
+            });
+            // TODO: We'll probably move all this in to a backbone view and
+            // listen for sync event
             buttons.save();
         });
-
     });
     </script>
     </body>
