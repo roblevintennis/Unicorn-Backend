@@ -22,12 +22,10 @@ app.enable('jsonp callback');
 
 //TODO: These are from docs ... rework later
 function logErrors(err, req, res, next) {
-    'use strict';
     console.error(err.stack);
     next(err);
 }
 function clientErrorHandler(err, req, res, next) {
-    'use strict';
     if (req.xhr) {
         res.send(500, { error: 'Something blew up!' });
     } else {
@@ -35,14 +33,12 @@ function clientErrorHandler(err, req, res, next) {
     }
 }
 function errorHandler(err, req, res, next) {
-    'use strict';
     res.status(500);
     res.render('error', { error: err });
 }
 
 // TODO: This is just a stub ... move to own file w/real _options.scss boiler plate
 function getOptionsBoilerPlate(moreRulesArray) {
-    'use strict';
     var multiStr = [
         '//////////////////////////////////////////////////////////',
         '//// BASE DEFAULTS /////////////////////////////////////////',
@@ -60,7 +56,6 @@ function getOptionsBoilerPlate(moreRulesArray) {
 }
 
 function generateOptionsFromRequest(request) {
-    'use strict';
     var css = [];
     var namespace = request.query['$namespace'] || 'button';
     var glowNamespace = request.query['$glow_namespace'] || '.glow';
@@ -137,7 +132,6 @@ function generateOptionsFromRequest(request) {
 
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
-    'use strict';
     if (!request.query['$button_actions']) {
         next(new Error('Server no comprende...probably missing required http param'));
     }
@@ -165,7 +159,6 @@ function createOptionsMiddleware(request, response, next) {
 }
 
 function compassCompileMiddleware(request, response, next) {
-    'use strict';
     console.log("In compassCompileMiddleware...");
     var sassDir = path.join(__dirname, 'scss');
     var cssDir = path.join(__dirname, 'css');
@@ -200,7 +193,7 @@ var mw = [createOptionsMiddleware, compassCompileMiddleware];
 app.get('/build', mw, function(request, response) {
     'use strict';
     console.log('GOT IN /build route...');
-    response.jsonp(request.buttonsCss)
+    response.jsonp(request.buttonsCss);
 });
 
 var port = process.env.PORT || 5000;
