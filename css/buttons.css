@@ -113,80 +113,80 @@
     box-shadow: 0px 0px 0px rgba(44, 154, 219, 0.3), 0px 1px 2px rgba(0, 0, 0, 0.2); } }
 
 /* line 25, ../scss/partials/_buttons.scss */
-big-ole-butts {
+.button {
   -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
   box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 1px 2px rgba(0, 0, 0, 0.15);
-  background-color: #eeeeee;
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fbfbfb), color-stop(100%, #e1e1e1));
-  background: -webkit-linear-gradient(top, #fbfbfb, #e1e1e1);
-  background: -moz-linear-gradient(top, #fbfbfb, #e1e1e1);
-  background: -o-linear-gradient(top, #fbfbfb, #e1e1e1);
-  background: linear-gradient(top, #fbfbfb, #e1e1e1);
+  background-color: #cccccc;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d9d9d9), color-stop(100%, #bfbfbf));
+  background: -webkit-linear-gradient(top, #d9d9d9, #bfbfbf);
+  background: -moz-linear-gradient(top, #d9d9d9, #bfbfbf);
+  background: -o-linear-gradient(top, #d9d9d9, #bfbfbf);
+  background: linear-gradient(top, #d9d9d9, #bfbfbf);
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: middle;
   *vertical-align: auto;
   zoom: 1;
   *display: inline;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #b3b3b3;
   height: 32px;
   line-height: 32px;
   padding: 0px 25.6px;
   font-weight: 300;
   font-size: 14px;
-  font-family: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif';
-  color: #444444;
+  font-family: "" HelveticaNeue-Light ", " Helvetica Neue Light ", " Helvetica Neue ", Helvetica, Arial, " Lucida Grande ", sans-serif";
+  color: #666666;
   text-shadow: 0 1px 1px white;
   margin: 0;
   text-decoration: none;
   text-align: center; }
   /* line 43, ../scss/partials/_buttons.scss */
-  big-ole-butts:hover {
-    background-color: #eeeeee;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dcdcdc));
-    background: -webkit-linear-gradient(top, #ffffff, #dcdcdc);
-    background: -moz-linear-gradient(top, #ffffff, #dcdcdc);
-    background: -o-linear-gradient(top, #ffffff, #dcdcdc);
-    background: linear-gradient(top, #ffffff, #dcdcdc); }
+  .button:hover {
+    background-color: #cccccc;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e6e6e6), color-stop(100%, #bababa));
+    background: -webkit-linear-gradient(top, #e6e6e6, #bababa);
+    background: -moz-linear-gradient(top, #e6e6e6, #bababa);
+    background: -o-linear-gradient(top, #e6e6e6, #bababa);
+    background: linear-gradient(top, #e6e6e6, #bababa); }
   /* line 47, ../scss/partials/_buttons.scss */
-  big-ole-butts:active {
+  .button:active {
     -webkit-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
     -moz-box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
     box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white;
     text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
-    background: #eeeeee;
-    color: #bbbbbb; }
+    background: #cccccc;
+    color: #999999; }
   /* line 53, ../scss/partials/_buttons.scss */
-  big-ole-butts:focus {
+  .button:focus {
     outline: none; }
 
 /* line 59, ../scss/partials/_buttons.scss */
-inputbig-ole-butts, buttonbig-ole-butts {
+input.button, button.button {
   height: 34px;
   cursor: pointer; }
 
 /* line 65, ../scss/partials/_buttons.scss */
-big-ole-butts-block {
+.button-block {
   display: block; }
 
 /* line 74, ../scss/partials/_buttons.scss */
-big-ole-butts.disabled,
-big-ole-butts.disabled:hover,
-big-ole-butts.disabled:active,
-inputbig-ole-butts:disabled,
-buttonbig-ole-butts:disabled {
+.button.disabled,
+.button.disabled:hover,
+.button.disabled:active,
+input.button:disabled,
+button.button:disabled {
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   background: #EEE;
-  border: 1px solid #DDD;
+  border: 1px solid #dddddd;
   text-shadow: 0 1px 1px white;
   color: #CCC;
   cursor: default; }
 
 /* line 84, ../scss/partials/_buttons.scss */
-big-ole-butts-wrap {
+.button-wrap {
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e3e3e3), color-stop(100%, #f2f2f2));
   background: -webkit-linear-gradient(top, #e3e3e3, #f2f2f2);
   background: -moz-linear-gradient(top, #e3e3e3, #f2f2f2);
@@ -204,7 +204,7 @@ big-ole-butts-wrap {
   display: inline-block; }
 
 /* line 100, ../scss/partials/_buttons.scss */
-big-ole-butts-rounded {
+.button-rounded {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -212,7 +212,7 @@ big-ole-butts-rounded {
   border-radius: 3px; }
 
 /* line 100, ../scss/partials/_buttons.scss */
-big-ole-butts-pill {
+.button-pill {
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   -ms-border-radius: 50px;
@@ -220,7 +220,7 @@ big-ole-butts-pill {
   border-radius: 50px; }
 
 /* line 100, ../scss/partials/_buttons.scss */
-big-ole-butts-circle {
+.button-circle {
   -webkit-border-radius: 240px;
   -moz-border-radius: 240px;
   -ms-border-radius: 240px;
@@ -237,55 +237,55 @@ big-ole-butts-circle {
   font-size: 18px; }
 
 /* line 135, ../scss/partials/_buttons.scss */
-big-ole-butts-primary {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #1a1aff), color-stop(100%, #0000e6));
-  background: -webkit-linear-gradient(top, #1a1aff, #0000e6);
-  background: -moz-linear-gradient(top, #1a1aff, #0000e6);
-  background: -o-linear-gradient(top, #1a1aff, #0000e6);
-  background: linear-gradient(top, #1a1aff, #0000e6);
-  background-color: blue;
-  border-color: #0000cc;
+.button-primary {
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00b5e5), color-stop(100%, #008db2));
+  background: -webkit-linear-gradient(top, #00b5e5, #008db2);
+  background: -moz-linear-gradient(top, #00b5e5, #008db2);
+  background: -o-linear-gradient(top, #00b5e5, #008db2);
+  background: linear-gradient(top, #00b5e5, #008db2);
+  background-color: #00a1cb;
+  border-color: #007998;
   color: white;
-  text-shadow: 0 -1px 1px rgba(0, 0, 102, 0.35); }
+  text-shadow: 0 -1px 1px rgba(0, 40, 50, 0.35); }
   /* line 142, ../scss/partials/_buttons.scss */
-  big-ole-butts-primary:hover {
-    background-color: blue;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3333ff), color-stop(100%, #0000e6));
-    background: -webkit-linear-gradient(top, #3333ff, #0000e6);
-    background: -moz-linear-gradient(top, #3333ff, #0000e6);
-    background: -o-linear-gradient(top, #3333ff, #0000e6);
-    background: linear-gradient(top, #3333ff, #0000e6); }
+  .button-primary:hover {
+    background-color: #00a1cb;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00c9fe), color-stop(100%, #008db2));
+    background: -webkit-linear-gradient(top, #00c9fe, #008db2);
+    background: -moz-linear-gradient(top, #00c9fe, #008db2);
+    background: -o-linear-gradient(top, #00c9fe, #008db2);
+    background: linear-gradient(top, #00c9fe, #008db2); }
   /* line 146, ../scss/partials/_buttons.scss */
-  big-ole-butts-primary:active {
-    background: #1919e6;
-    color: #000099; }
+  .button-primary:active {
+    background: #1495b7;
+    color: #005065; }
 
 /* line 135, ../scss/partials/_buttons.scss */
-big-ole-butts-action {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #009a00), color-stop(100%, #006700));
-  background: -webkit-linear-gradient(top, #009a00, #006700);
-  background: -moz-linear-gradient(top, #009a00, #006700);
-  background: -o-linear-gradient(top, #009a00, #006700);
-  background: linear-gradient(top, #009a00, #006700);
-  background-color: green;
-  border-color: #004d00;
+.button-action {
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #8fcf00), color-stop(100%, #6b9c00));
+  background: -webkit-linear-gradient(top, #8fcf00, #6b9c00);
+  background: -moz-linear-gradient(top, #8fcf00, #6b9c00);
+  background: -o-linear-gradient(top, #8fcf00, #6b9c00);
+  background: linear-gradient(top, #8fcf00, #6b9c00);
+  background-color: #7db500;
+  border-color: #5a8200;
   color: white;
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35); }
+  text-shadow: 0 -1px 1px rgba(19, 28, 0, 0.35); }
   /* line 142, ../scss/partials/_buttons.scss */
-  big-ole-butts-action:hover {
-    background-color: green;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00b300), color-stop(100%, #006700));
-    background: -webkit-linear-gradient(top, #00b300, #006700);
-    background: -moz-linear-gradient(top, #00b300, #006700);
-    background: -o-linear-gradient(top, #00b300, #006700);
-    background: linear-gradient(top, #00b300, #006700); }
+  .button-action:hover {
+    background-color: #7db500;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a0e800), color-stop(100%, #6b9c00));
+    background: -webkit-linear-gradient(top, #a0e800, #6b9c00);
+    background: -moz-linear-gradient(top, #a0e800, #6b9c00);
+    background: -o-linear-gradient(top, #a0e800, #6b9c00);
+    background: linear-gradient(top, #a0e800, #6b9c00); }
   /* line 146, ../scss/partials/_buttons.scss */
-  big-ole-butts-action:active {
-    background: #0d730d;
-    color: #001a00; }
+  .button-action:active {
+    background: #76a312;
+    color: #374f00; }
 
 /* line 135, ../scss/partials/_buttons.scss */
-big-ole-butts-highlight {
+.button-highlight {
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fa9915), color-stop(100%, #d87e04));
   background: -webkit-linear-gradient(top, #fa9915, #d87e04);
   background: -moz-linear-gradient(top, #fa9915, #d87e04);
@@ -296,7 +296,7 @@ big-ole-butts-highlight {
   color: white;
   text-shadow: 0 -1px 1px rgba(91, 53, 2, 0.35); }
   /* line 142, ../scss/partials/_buttons.scss */
-  big-ole-butts-highlight:hover {
+  .button-highlight:hover {
     background-color: #f18d05;
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fba42e), color-stop(100%, #d87e04));
     background: -webkit-linear-gradient(top, #fba42e, #d87e04);
@@ -304,12 +304,12 @@ big-ole-butts-highlight {
     background: -o-linear-gradient(top, #fba42e, #d87e04);
     background: linear-gradient(top, #fba42e, #d87e04); }
   /* line 146, ../scss/partials/_buttons.scss */
-  big-ole-butts-highlight:active {
+  .button-highlight:active {
     background: #d8891e;
     color: #8d5303; }
 
 /* line 135, ../scss/partials/_buttons.scss */
-big-ole-butts-caution {
+.button-caution {
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e8543f), color-stop(100%, #d9331a));
   background: -webkit-linear-gradient(top, #e8543f, #d9331a);
   background: -moz-linear-gradient(top, #e8543f, #d9331a);
@@ -320,7 +320,7 @@ big-ole-butts-caution {
   color: white;
   text-shadow: 0 -1px 1px rgba(103, 24, 13, 0.35); }
   /* line 142, ../scss/partials/_buttons.scss */
-  big-ole-butts-caution:hover {
+  .button-caution:hover {
     background-color: #e54028;
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eb6855), color-stop(100%, #d9331a));
     background: -webkit-linear-gradient(top, #eb6855, #d9331a);
@@ -328,12 +328,12 @@ big-ole-butts-caution {
     background: -o-linear-gradient(top, #eb6855, #d9331a);
     background: linear-gradient(top, #eb6855, #d9331a); }
   /* line 146, ../scss/partials/_buttons.scss */
-  big-ole-butts-caution:active {
+  .button-caution:active {
     background: #cd5240;
     color: #952312; }
 
 /* line 135, ../scss/partials/_buttons.scss */
-big-ole-butts-royal {
+.button-royal {
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #99389f), color-stop(100%, #752a79));
   background: -webkit-linear-gradient(top, #99389f, #752a79);
   background: -moz-linear-gradient(top, #99389f, #752a79);
@@ -344,7 +344,7 @@ big-ole-butts-royal {
   color: white;
   text-shadow: 0 -1px 1px rgba(26, 9, 27, 0.35); }
   /* line 142, ../scss/partials/_buttons.scss */
-  big-ole-butts-royal:hover {
+  .button-royal:hover {
     background-color: #87318c;
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ab3eb2), color-stop(100%, #752a79));
     background: -webkit-linear-gradient(top, #ab3eb2, #752a79);
@@ -352,36 +352,12 @@ big-ole-butts-royal {
     background: -o-linear-gradient(top, #ab3eb2, #752a79);
     background: linear-gradient(top, #ab3eb2, #752a79); }
   /* line 146, ../scss/partials/_buttons.scss */
-  big-ole-butts-royal:active {
+  .button-royal:active {
     background: #764479;
     color: #3e1740; }
 
-/* line 135, ../scss/partials/_buttons.scss */
-big-ole-butts-silly {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffdae0), color-stop(100%, #ffa6b6));
-  background: -webkit-linear-gradient(top, #ffdae0, #ffa6b6);
-  background: -moz-linear-gradient(top, #ffdae0, #ffa6b6);
-  background: -o-linear-gradient(top, #ffdae0, #ffa6b6);
-  background: linear-gradient(top, #ffdae0, #ffa6b6);
-  background-color: pink;
-  border-color: #ff8da1;
-  color: white;
-  text-shadow: 0 -1px 1px rgba(255, 39, 77, 0.35); }
-  /* line 142, ../scss/partials/_buttons.scss */
-  big-ole-butts-silly:hover {
-    background-color: pink;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fff3f5), color-stop(100%, #ffa6b6));
-    background: -webkit-linear-gradient(top, #fff3f5, #ffa6b6);
-    background: -moz-linear-gradient(top, #fff3f5, #ffa6b6);
-    background: -o-linear-gradient(top, #fff3f5, #ffa6b6);
-    background: linear-gradient(top, #fff3f5, #ffa6b6); }
-  /* line 146, ../scss/partials/_buttons.scss */
-  big-ole-butts-silly:active {
-    background: #f9c6cf;
-    color: #ff5a77; }
-
 /* line 160, ../scss/partials/_buttons.scss */
-big-ole-butts-flat {
+.button-flat {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -393,28 +369,28 @@ big-ole-butts-flat {
   -moz-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  background: #eeeeee;
+  background: #cccccc;
   border: none;
   text-shadow: none; }
   /* line 169, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat:hover {
-    background: #fbfbfb; }
+  .button-flat:hover {
+    background: #d9d9d9; }
   /* line 172, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat:active {
+  .button-flat:active {
     -webkit-transition-duration: 0s;
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
     transition-duration: 0s;
-    background: #eeeeee;
-    color: #bbbbbb; }
+    background: #cccccc;
+    color: #999999; }
   /* line 177, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat.disabled {
+  .button-flat.disabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
 
 /* line 189, ../scss/partials/_buttons.scss */
-big-ole-butts-flat-primary {
+.button-flat-primary {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -426,29 +402,29 @@ big-ole-butts-flat-primary {
   -moz-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  background: blue;
+  background: #00a1cb;
   color: white;
   text-shadow: none;
   border: none; }
   /* line 198, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-primary:hover {
-    background: #1a1aff; }
+  .button-flat-primary:hover {
+    background: #00b5e5; }
   /* line 201, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-primary:active {
+  .button-flat-primary:active {
     -webkit-transition-duration: 0s;
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
     transition-duration: 0s;
-    background: #1919e6;
-    color: #0000b3; }
+    background: #1495b7;
+    color: #00647f; }
   /* line 206, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-primary.disabled {
+  .button-flat-primary.disabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
 
 /* line 189, ../scss/partials/_buttons.scss */
-big-ole-butts-flat-action {
+.button-flat-action {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -460,29 +436,29 @@ big-ole-butts-flat-action {
   -moz-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  background: green;
+  background: #7db500;
   color: white;
   text-shadow: none;
   border: none; }
   /* line 198, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-action:hover {
-    background: #009a00; }
+  .button-flat-action:hover {
+    background: #8fcf00; }
   /* line 201, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-action:active {
+  .button-flat-action:active {
     -webkit-transition-duration: 0s;
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
     transition-duration: 0s;
-    background: #0d730d;
-    color: #003400; }
+    background: #76a312;
+    color: #486900; }
   /* line 206, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-action.disabled {
+  .button-flat-action.disabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
 
 /* line 189, ../scss/partials/_buttons.scss */
-big-ole-butts-flat-highlight {
+.button-flat-highlight {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -499,10 +475,10 @@ big-ole-butts-flat-highlight {
   text-shadow: none;
   border: none; }
   /* line 198, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-highlight:hover {
+  .button-flat-highlight:hover {
     background: #fa9915; }
   /* line 201, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-highlight:active {
+  .button-flat-highlight:active {
     -webkit-transition-duration: 0s;
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
@@ -510,13 +486,13 @@ big-ole-butts-flat-highlight {
     background: #d8891e;
     color: #a66103; }
   /* line 206, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-highlight.disabled {
+  .button-flat-highlight.disabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
 
 /* line 189, ../scss/partials/_buttons.scss */
-big-ole-butts-flat-caution {
+.button-flat-caution {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -533,10 +509,10 @@ big-ole-butts-flat-caution {
   text-shadow: none;
   border: none; }
   /* line 198, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-caution:hover {
+  .button-flat-caution:hover {
     background: #e8543f; }
   /* line 201, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-caution:active {
+  .button-flat-caution:active {
     -webkit-transition-duration: 0s;
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
@@ -544,13 +520,13 @@ big-ole-butts-flat-caution {
     background: #cd5240;
     color: #ac2815; }
   /* line 206, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-caution.disabled {
+  .button-flat-caution.disabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
 
 /* line 189, ../scss/partials/_buttons.scss */
-big-ole-butts-flat-royal {
+.button-flat-royal {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -567,10 +543,10 @@ big-ole-butts-flat-royal {
   text-shadow: none;
   border: none; }
   /* line 198, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-royal:hover {
+  .button-flat-royal:hover {
     background: #99389f; }
   /* line 201, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-royal:active {
+  .button-flat-royal:active {
     -webkit-transition-duration: 0s;
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
@@ -578,80 +554,46 @@ big-ole-butts-flat-royal {
     background: #764479;
     color: #501d53; }
   /* line 206, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-royal.disabled {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none; }
-
-/* line 189, ../scss/partials/_buttons.scss */
-big-ole-butts-flat-silly {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  -webkit-transition-property: background;
-  -moz-transition-property: background;
-  -o-transition-property: background;
-  transition-property: background;
-  -webkit-transition-duration: 0.3s;
-  -moz-transition-duration: 0.3s;
-  -o-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  background: pink;
-  color: white;
-  text-shadow: none;
-  border: none; }
-  /* line 198, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-silly:hover {
-    background: #ffdae0; }
-  /* line 201, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-silly:active {
-    -webkit-transition-duration: 0s;
-    -moz-transition-duration: 0s;
-    -o-transition-duration: 0s;
-    transition-duration: 0s;
-    background: #f9c6cf;
-    color: #ff738c; }
-  /* line 206, ../scss/partials/_buttons.scss */
-  big-ole-butts-flat-silly.disabled {
+  .button-flat-royal.disabled {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
 
 /* line 221, ../scss/partials/_buttons.scss */
-big-ole-butts-large {
+.button-large {
   font-size: 19px;
   height: 38.4px;
   line-height: 38.4px;
   padding: 0px 30.72px; }
 
 /* line 245, ../scss/partials/_buttons.scss */
-inputbig-ole-butts-large, buttonbig-ole-butts-large {
+input.button-large, button.button-large {
   height: 40.4px; }
 
 /* line 221, ../scss/partials/_buttons.scss */
-big-ole-butts-small {
+.button-small {
   font-size: 16px;
   height: 25.6px;
   line-height: 25.6px;
   padding: 0px 20.48px; }
 
 /* line 245, ../scss/partials/_buttons.scss */
-inputbig-ole-butts-small, buttonbig-ole-butts-small {
+input.button-small, button.button-small {
   height: 27.6px; }
 
 /* line 221, ../scss/partials/_buttons.scss */
-big-ole-butts-tiny {
+.button-tiny {
   font-size: 12px;
   height: 22.4px;
   line-height: 22.4px;
   padding: 0px 17.92px; }
 
 /* line 245, ../scss/partials/_buttons.scss */
-inputbig-ole-butts-tiny, buttonbig-ole-butts-tiny {
+input.button-tiny, button.button-tiny {
   height: 24.4px; }
 
 /* line 265, ../scss/partials/_buttons.scss */
-big-ole-butts.glow {
+.button.glow {
   -webkit-animation-duration: 3s;
   -moz-animation-duration: 3s;
   -ms-animation-duration: 3s;
@@ -670,7 +612,7 @@ big-ole-butts.glow {
   -o-animation-name: glowing;
   animation-name: glowing; }
 /* line 268, ../scss/partials/_buttons.scss */
-big-ole-butts.glow:active {
+.button.glow:active {
   -webkit-animation-name: none;
   -moz-animation-name: none;
   -ms-animation-name: none;
@@ -681,12 +623,12 @@ big-ole-butts.glow:active {
   box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px white; }
 
 /* line 279, ../scss/partials/_buttons.scss */
-big-ole-butts-dropdown {
+.button-dropdown {
   position: relative;
   overflow: visible;
   display: inline-block; }
   /* line 284, ../scss/partials/_buttons.scss */
-  big-ole-butts-dropdown big-ole-butts-overlay {
+  .button-dropdown .button-overlay {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -694,19 +636,19 @@ big-ole-butts-dropdown {
     bottom: 0px;
     z-index: 999; }
   /* line 295, ../scss/partials/_buttons.scss */
-  big-ole-butts-dropdown .button .icon-caret-down {
+  .button-dropdown .button .icon-caret-down {
     font-size: 90%;
     margin: 0px 0px 0px 3px;
     vertical-align: middle; }
   /* line 302, ../scss/partials/_buttons.scss */
-  big-ole-butts-dropdown ulbig-ole-butts-dropdown-menu-below {
+  .button-dropdown ul.button-dropdown-menu-below {
     top: 115%; }
   /* line 305, ../scss/partials/_buttons.scss */
-  big-ole-butts-dropdown ulbig-ole-butts-dropdown-menu-above {
+  .button-dropdown ul.button-dropdown-menu-above {
     bottom: 115%;
     top: auto; }
   /* line 311, ../scss/partials/_buttons.scss */
-  big-ole-butts-dropdown ul {
+  .button-dropdown ul {
     -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6);
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6);
@@ -726,12 +668,12 @@ big-ole-butts-dropdown {
     list-style-type: none;
     min-width: 102%; }
     /* line 325, ../scss/partials/_buttons.scss */
-    big-ole-butts-dropdown ul li {
+    .button-dropdown ul li {
       padding: 0px;
       margin: 0px;
       display: block; }
       /* line 330, ../scss/partials/_buttons.scss */
-      big-ole-butts-dropdown ul li:first-child a {
+      .button-dropdown ul li:first-child a {
         -moz-border-radius-topleft: 3px;
         -webkit-border-top-left-radius: 3px;
         border-top-left-radius: 3px;
@@ -739,7 +681,7 @@ big-ole-butts-dropdown {
         -webkit-border-top-right-radius: 3px;
         border-top-right-radius: 3px; }
       /* line 333, ../scss/partials/_buttons.scss */
-      big-ole-butts-dropdown ul li:last-child a {
+      .button-dropdown ul li:last-child a {
         -moz-border-radius-bottomleft: 3px;
         -webkit-border-bottom-left-radius: 3px;
         border-bottom-left-radius: 3px;
@@ -747,13 +689,13 @@ big-ole-butts-dropdown {
         -webkit-border-bottom-right-radius: 3px;
         border-bottom-right-radius: 3px; }
     /* line 339, ../scss/partials/_buttons.scss */
-    big-ole-butts-dropdown ul big-ole-butts-dropdown-divider {
+    .button-dropdown ul .button-dropdown-divider {
       -webkit-box-shadow: inset 0px 1px 0px white;
       -moz-box-shadow: inset 0px 1px 0px white;
       box-shadow: inset 0px 1px 0px white;
       border-top: 1px solid #e4e4e4; }
     /* line 344, ../scss/partials/_buttons.scss */
-    big-ole-butts-dropdown ul a {
+    .button-dropdown ul a {
       display: block;
       padding: 0px 20px;
       text-decoration: none;
@@ -762,6 +704,6 @@ big-ole-butts-dropdown {
       line-height: 30px;
       white-space: nowrap; }
       /* line 353, ../scss/partials/_buttons.scss */
-      big-ole-butts-dropdown ul a:hover {
+      .button-dropdown ul a:hover {
         background-color: #3c6ab9;
         color: white; }
