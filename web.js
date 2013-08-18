@@ -2,6 +2,7 @@
 var express = require('express'),
     path = require('path'),
     fs = require('fs'),
+    _ = require('underscore'),
     exec = require('child_process').exec,
     child,
     app = express();
