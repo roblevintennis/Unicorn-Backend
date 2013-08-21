@@ -194,7 +194,11 @@ var mw = [createOptionsMiddleware, compassCompileMiddleware];
 app.get('/build', mw, function(request, response) {
     'use strict';
     console.log('GOT IN /build route...');
-    response.jsonp(request.buttonsCss);
+    var json = {
+        buttonsCss: request.buttonsCss.css,
+        optionsScss: request.cssObj.css
+    }
+    response.jsonp(json);
 });
 
 var port = process.env.PORT || 5000;
