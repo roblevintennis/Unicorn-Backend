@@ -16,8 +16,15 @@
         </ol>
         <p><strong>You should be able to see this by breaking on the parse method and inspecting the response object</strong></p>
         <p><a href="#" id="testlink">Mutate Buttons Model (forces a backbone.sync)</a></p>
+
+        <p>Here's a download test: </p>
+        <p><input id='download' type=button value="Download" /></p>
     <script type="text/javascript">
-    $(function(){
+    $(function() {
+        function download() {
+            var url = 'http://localhost:5000/download/buttons';
+            window.open(url, 'Download');
+        }
         var JsonpModel = Backbone.Model.extend({
             /**
              * "sub-classes" of JsonpModel must override this
@@ -27,6 +34,7 @@
             url: function() {
                 // return 'http://options-compiler.herokuapp.com/build';
                 return 'http://localhost:5000/build';
+
             },
             sync: function(method, model, options) {
                 var url = model.url()+"?callback=?";
@@ -86,6 +94,15 @@
             }
         });
         var buttons = new Buttons();
+
+        // Test straight up download using buttons.toJSON as our query string for window.open
+        $('#download').click(function(e) {
+            var url = 'http://localhost:5000/download/buttons?';
+            var data = buttons.toJSON();
+            url += $.param(data);
+            console.log("URL: ", url);
+            window.open(url, 'Download');
+        });
 
         // Idea is we can define additional "modules" in same way; e.g. for Grids:
         // var Grids = JsonpModel.extend({ type: 'grids' .... });

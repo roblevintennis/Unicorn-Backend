@@ -4,6 +4,7 @@ var express = require('express'),
     fs = require('fs'),
     _ = require('underscore'),
     exec = require('child_process').exec,
+    spawn = require('child_process').spawn,
     child,
     app = express();
 
@@ -143,7 +144,7 @@ function createOptionsMiddleware(request, response, next) {
     var cssObj = {
         css: optionsCss
     };
-    var dest = path.resolve('.', 'scss/partials/_options.scss');
+    var dest = path.resolve('.', 'buttons/scss/partials/_options.scss');
     fs.writeFile(dest, cssObj.css, function(err) {
         if(err) {
             console.log(err);
@@ -154,30 +155,30 @@ function createOptionsMiddleware(request, response, next) {
         request.cssObj = cssObj;
 
         // Since compass middleware is next in "chain", it will compile our scss
-        console.log("In createOptionsMiddleware ... before calling next()");
+        console.log('In createOptionsMiddleware ... before calling next()');
         next();
     });
 }
 
 function compassCompileMiddleware(request, response, next) {
-    console.log("In compassCompileMiddleware...");
-    var sassDir = path.join(__dirname, 'scss');
-    var cssDir = path.join(__dirname, 'css');
+    console.log('In compassCompileMiddleware...');
+    var sassDir = path.join(__dirname, 'buttons/scss');
+    var cssDir = path.join(__dirname, 'buttons/css');
     var outputStyle = 'nested';
     var options = ' --sass-dir '+sassDir+' --css-dir '+cssDir+' --force --output-style '+outputStyle;
-    var cmd = "compass compile" + options;
+    var cmd = 'compass compile' + options;
 
     child = exec(cmd, function (err, stdout, stderr) {
-        var cssPath = path.resolve('.', 'css/buttons.css');
+        var cssPath = path.resolve('.', 'buttons/css/buttons.css');
         if (err) {
             console.log(err);
-            next(new Error("Issue compass compiling buttons.css"));
+            next(new Error('Issue compass compiling buttons.css'));
         } else {
-            console.log("looks like compass compile worked...reading back buttons.css...");
+            console.log('looks like compass compile worked...reading back buttons.css...');
             fs.readFile(cssPath, 'utf8', function (err, data) {
                 if (err) {
                     console.log(err);
-                    next(new Error("Issue reading back buttons.css"));
+                    next(new Error('Issue reading back buttons.css'));
                 }
                 request.buttonsCss = {css: data};
                 next();
@@ -192,13 +193,37 @@ var mw = [createOptionsMiddleware, compassCompileMiddleware];
 
 // We use some custom "route-specific middleware" here. See http://www.screenr.com/elL
 app.get('/build', mw, function(request, response) {
-    'use strict';
     console.log('GOT IN /build route...');
     var json = {
         buttonsCss: request.buttonsCss.css,
         optionsScss: request.cssObj.css
-    }
+    };
     response.jsonp(json);
+});
+
+app.get('/download/buttons', mw, function(request, response) {
+    'use strict';
+    // Note that the second - option is to redirect to stdout
+    var zip = spawn('zip', ['-r', '-', 'buttons/']);
+    response.contentType('zip');
+    // Keep writing stdout to response
+    zip.stdout.on('data', function (data) {
+        response.write(data);
+    });
+    // zip.stderr.on('data', function (data) {
+    //     console.log('zip stderr: ' + data);
+    // });
+
+    // Once we're done zipping, respond
+    zip.on('exit', function (code) {
+        if(code !== 0) {
+            response.statusCode = 200;
+            console.log('zip process exited with code ' + code);
+            response.end();
+        } else {
+            response.end();
+        }
+    });
 });
 
 var port = process.env.PORT || 5000;
