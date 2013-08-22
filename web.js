@@ -56,8 +56,7 @@ function getOptionsBoilerPlate(moreRulesArray) {
     }
     return multiStr.join('\n');
 }
-
-function generateOptionsFromRequest(request) {
+function generateOptionsForButtons(request) {
     var css = [];
     var namespace = request.query['$namespace'] || 'button';
     var glowNamespace = request.query['$glow_namespace'] || '.glow';
@@ -131,29 +130,31 @@ function generateOptionsFromRequest(request) {
     css.push('$dropdown-link-hover-background: ' + dropdownLinkHoverBackground + ';');
     return css.join('\n');
 }
+function generateOptionsFromRequest(request) {
+    var module = request.params.module;
+    if (module === 'buttons') {
+        return generateOptionsForButtons(request);
+    } else if (module === 'grids') {
+        // TODO
+        // return generateOptionsForGrids(request);
+    } else if (module === 'another_cool_module_we_introduce') {
+        // TODO
+    }
+    // TODO: Throw a 404 if none of these match
+}
 
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
-    if (!request.query['$button_actions']) {
-        next(new Error('Server no comprende...probably missing required http param'));
-    }
+    var module = request.params.module;
     // Essentially parses query params into an _options.scss string
-    var optionsCss = generateOptionsFromRequest(request);
-    // TODO: Make this flexible for any module e.g. grids, buttons, etc.
-    // should all use the same code
-    var cssObj = {
-        css: optionsCss
-    };
-    var dest = path.resolve('.', 'buttons/scss/partials/_options.scss');
-    fs.writeFile(dest, cssObj.css, function(err) {
+    var optionsScss = generateOptionsFromRequest(request);
+    var dest = path.resolve('.', module + '/scss/partials/_options.scss');
+    fs.writeFile(dest, optionsScss, function(err) {
         if(err) {
             console.log(err);
             next(new Error('Issue writing file'));
         }
-        //TODO: This will go away later when we read back in the generated
-        //buttons.css (generated after the compass middleware step)
-        request.cssObj = cssObj;
-
+        request.optionsScss = optionsScss;
         // Since compass middleware is next in "chain", it will compile our scss
         console.log('In createOptionsMiddleware ... before calling next()');
         next();
@@ -162,25 +163,26 @@ function createOptionsMiddleware(request, response, next) {
 
 function compassCompileMiddleware(request, response, next) {
     console.log('In compassCompileMiddleware...');
-    var sassDir = path.join(__dirname, 'buttons/scss');
-    var cssDir = path.join(__dirname, 'buttons/css');
+    var module = request.params.module;
+    var sassDir = path.join(__dirname, module+'/scss');
+    var cssDir = path.join(__dirname, module+'/css');
     var outputStyle = 'nested';
     var options = ' --sass-dir '+sassDir+' --css-dir '+cssDir+' --force --output-style '+outputStyle;
     var cmd = 'compass compile' + options;
 
     child = exec(cmd, function (err, stdout, stderr) {
-        var cssPath = path.resolve('.', 'buttons/css/buttons.css');
+        var cssPath = path.resolve('.', module+'/css/buttons.css');
         if (err) {
             console.log(err);
-            next(new Error('Issue compass compiling buttons.css'));
+            next(new Error('Issue compass compiling '+module+'.css'));
         } else {
-            console.log('looks like compass compile worked...reading back buttons.css...');
+            console.log('looks like compass compile worked...reading back '+module+'.css...');
             fs.readFile(cssPath, 'utf8', function (err, data) {
                 if (err) {
                     console.log(err);
-                    next(new Error('Issue reading back buttons.css'));
+                    next(new Error('Issue reading back '+module+'.css'));
                 }
-                request.buttonsCss = {css: data};
+                request[module] = {css: data};
                 next();
             });
         }
@@ -192,19 +194,22 @@ function compassCompileMiddleware(request, response, next) {
 var mw = [createOptionsMiddleware, compassCompileMiddleware];
 
 // We use some custom "route-specific middleware" here. See http://www.screenr.com/elL
-app.get('/build', mw, function(request, response) {
-    console.log('GOT IN /build route...');
-    var json = {
-        buttonsCss: request.buttonsCss.css,
-        optionsScss: request.cssObj.css
-    };
+app.get('/build/:module', mw, function(request, response) {
+    var module = request.params.module;
+    console.log('GOT IN /build/'+module+' route...');
+    var json = {};
+    json[module] = request[module].css;
+    json.optionsScss = request.optionsScss;
     response.jsonp(json);
 });
 
-app.get('/download/buttons', mw, function(request, response) {
+app.get('/download/:module', mw, function(request, response) {
     'use strict';
+    var module = request.params.module;
+    console.log('GOT IN /download/'+module+' route...');
     // Note that the second - option is to redirect to stdout
-    var zip = spawn('zip', ['-r', '-', 'buttons/']);
+    var moduleDir = module+'/';
+    var zip = spawn('zip', ['-r', '-', moduleDir]);
     response.contentType('zip');
     // Keep writing stdout to response
     zip.stdout.on('data', function (data) {

@@ -27,14 +27,19 @@
         }
         var JsonpModel = Backbone.Model.extend({
             /**
+             * We won't actually pollute our real models this way, but I'm
+             * just using this to drive refactoring back-end to take /build/:module
+             */
+            module: 'buttons',
+            /**
              * "sub-classes" of JsonpModel must override this
              * @type {String}
              */
             type: null,
             url: function() {
-                // return 'http://options-compiler.herokuapp.com/build';
-                return 'http://localhost:5000/build';
-
+                // return 'http://options-compiler.herokuapp.com/build/buttons';
+                return 'http://localhost:5000/build/'+this.module;
+                // WE ARE NOW USING /build/:module
             },
             sync: function(method, model, options) {
                 var url = model.url()+"?callback=?";
@@ -46,7 +51,6 @@
                   dataType: 'jsonp',
                   data: data,
                   url: url
-                  // processData: false
                 }, options);
 
                 // Make the request.
@@ -54,12 +58,11 @@
             },
             parse: function(response) {
                 // parse can be invoked for fetch and save, in case of save it can be undefined so check before using
-                if (response) {
-                    if (response.css) {
-                        return {css: response.css};
-                        // TODO: We'll partition the css with <module_type> so we can potentially have css.buttons, css.grids etc.
-                        // return {css: response.css[this.type]};
-                    }
+                if (response && response[this.module]) {
+                    return {
+                        css: response[this.module],
+                        optionsScss: response.optionsScss
+                    };
                 }
             }
         });
