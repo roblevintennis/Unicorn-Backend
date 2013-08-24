@@ -21,10 +21,6 @@
         <p><input id='download' type=button value="Download" /></p>
     <script type="text/javascript">
     $(function() {
-        function download() {
-            var url = 'http://localhost:5000/download/buttons';
-            window.open(url, 'Download');
-        }
         var JsonpModel = Backbone.Model.extend({
             /**
              * We won't actually pollute our real models this way, but I'm
