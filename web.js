@@ -39,101 +39,10 @@ function errorHandler(err, req, res, next) {
     res.render('error', { error: err });
 }
 
-// TODO: This is just a stub ... move to own file w/real _options.scss boiler plate
-function getOptionsBoilerPlate(moreRulesArray) {
-    var multiStr = [
-        '//////////////////////////////////////////////////////////',
-        '//// BASE DEFAULTS /////////////////////////////////////////',
-        '////////////////////////////////////////////////////////////',
-        '$namespace: ".button"; //prefix for all classes',
-        '$glow_namespace: ".glow";',
-        '$glow_color: #2c9adb;',
-        '$bgcolor: #EEE;',
-        '$height: 32px;'
-    ];
-    if (moreRulesArray) {
-        multiStr = multiStr.concat(moreRulesArray);
-    }
-    return multiStr.join('\n');
-}
-function generateOptionsForButtons(request) {
-    var css = [];
-    var namespace = request.query['$namespace'] || 'button';
-    var glowNamespace = request.query['$glow_namespace'] || '.glow';
-    var glowColor = request.query['$glow_color'] || '#2c9adb';
-    var bgColor = request.query['$bgcolor'] || '#eee';
-    var height = request.query['$height'] || '32px';
-    var circleSize = request.query['$circle-size'] || '120px';
-    var fontColor = request.query['$font-color'] || '#666';
-    var fontSize = request.query['$font-size'] || '14px';
-    var fontWeight = request.query['$font-weight'] || 300;
-    fontWeight = parseInt(fontWeight, 10);
-    var fontFamily = request.query['$font-family'] || '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif';
-    var dropdownBackground = request.query['$dropdown-background'] || '#fcfcfc';
-    var dropdownLinkColor = request.query['$dropdown-link-color'] || '#333';
-    var dropdownLinkHover = request.query['$dropdown-link-hover'] || '#fff';
-    var dropdownLinkHoverBackground = request.query['$dropdown-link-hover-background'] || '#3c6ab9';
-
-    var buttonActions = '';
-    var reqButtonActions = request.query['$button_actions'];
-    if (reqButtonActions) {
-        Object.keys(reqButtonActions).forEach(function(key) {
-            var val = reqButtonActions[key];
-            buttonActions += "('" + key + "' " + val + ") ";
-        });
-        buttonActions += ';';
-    } else {
-        // Fallback
-        buttonActions = " ('primary' #00A1CB #FFF) ('action' #7db500 #FFF) ('highlight' #F18D05 #FFF)('caution' #E54028 #FFF) ('royal' #87318C #FFF);";
-    }
-    css.push('$button_actions: ' + buttonActions);
-
-    var buttonStyles = '';
-    var reqButtonStyles = request.query['$button_styles'];
-    if (reqButtonStyles) {
-        reqButtonStyles.forEach(function(item) {
-            buttonStyles += "'" + item + "' ";
-        });
-        buttonStyles += ';';
-    } else {
-        // Fallback
-        buttonStyles = " 'rounded' 'pill' 'circle';";
-    }
-    css.push('$button_styles: ' + buttonStyles);
-
-    var buttonSizes = '';
-    var reqButtonSizes = request.query['$button_sizes'];
-    if (reqButtonSizes) {
-        reqButtonSizes.forEach(function(item) {
-            buttonSizes += "'" + item + "' ";
-        });
-        buttonSizes += ';';
-    } else {
-        // Fallback
-        buttonSizes = " 'large' 'small' 'tiny';";
-    }
-    css.push('$button_sizes: ' + buttonSizes);
-
-    css.push('$namespace: "' + namespace + '";')
-    css.push('$glow_namespace: "' + glowNamespace + '";');
-    css.push('$glow_color: ' + glowColor + ';');
-    css.push('$bgcolor: ' + bgColor + ';');
-    css.push('$height: ' + height + ';');
-    css.push('$circle-size: ' + circleSize+ ';');
-    css.push('$font-color: ' + fontColor + ';');
-    css.push('$font-size: ' + fontSize + ';');
-    css.push('$font-weight: ' + fontWeight + ';');
-    css.push("$font-family: '" + fontFamily + "';");
-    css.push('$dropdown-background: ' + dropdownBackground + ';');
-    css.push('$dropdown-link-color: ' + dropdownLinkColor + ';');
-    css.push('$dropdown-link-hover: ' + dropdownLinkHover + ';');
-    css.push('$dropdown-link-hover-background: ' + dropdownLinkHoverBackground + ';');
-    return css.join('\n');
-}
 function generateOptionsFromRequest(request) {
     var module = request.params.module;
-    if (module === 'buttons') {
-        return generateOptionsForButtons(request);
+    if (module === 'buttons' && request.query._options) {
+        return request.query._options;
     } else if (module === 'grids') {
         // TODO
         // return generateOptionsForGrids(request);
