@@ -2,3 +2,4 @@
 .sass-cache/*
 .gitignore/*
 node_modules
+*.psd
