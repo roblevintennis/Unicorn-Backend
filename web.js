@@ -57,6 +57,9 @@ function createOptionsMiddleware(request, response, next) {
     var module = request.params.module;
     // Essentially parses query params into an _options.scss string
     var optionsScss = generateOptionsFromRequest(request);
+    // We need to manually add the build-types partial import to end of _options.scss
+    optionsScss += '\n\n@import "build-types";\n';
+
     var dest = path.resolve('.', module + '/scss/partials/_options.scss');
     fs.writeFile(dest, optionsScss, function(err) {
         if(err) {
