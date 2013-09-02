@@ -39,10 +39,12 @@ function errorHandler(err, req, res, next) {
     res.render('error', { error: err });
 }
 
-function generateOptionsFromRequest(request) {
+function generateTypesFromRequest(request) {
     var module = request.params.module;
-    if (module === 'buttons' && request.query._options) {
-        return request.query._options;
+    if (module === 'buttons' && request.query.types) {
+        // Create a valid $uni-btn-types entry
+        var types = '$uni-btn-types: ' + "'" + request.query.types.join("' '") + "';";
+        return types;
     } else if (module === 'grids') {
         // TODO
         // return generateOptionsForGrids(request);
@@ -54,27 +56,43 @@ function generateOptionsFromRequest(request) {
 
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
+    console.log("createOptionsMiddleware entered...");
     var module = request.params.module;
-    // Essentially parses query params into an _options.scss string
-    var optionsScss = generateOptionsFromRequest(request);
-    // We need to manually add the build-types partial import to end of _options.scss
-    optionsScss += '\n\n@import "build-types";\n';
+    var types = generateTypesFromRequest(request);
 
+    // Read in _options.scss file
+    console.log("createOptionsMiddleware about to read _options...");
     var dest = path.resolve('.', module + '/scss/partials/_options.scss');
-    fs.writeFile(dest, optionsScss, function(err) {
-        if(err) {
+    fs.readFile(dest, 'utf8', function (err, data) {
+        if (err) {
             console.log(err);
-            next(new Error('Issue writing file'));
+            next(new Error('Issue reading in '+dest));
         }
-        request.optionsScss = optionsScss;
-        // Since compass middleware is next in "chain", it will compile our scss
-        console.log('In createOptionsMiddleware ... before calling next()');
-        next();
+        // Save the original _options.scss
+        request.originalOptionsScss = data;
+
+        // Replace $uni-btn-types line with our generated types
+        var optionsScss = data.replace(/\$uni\-btn\-types:.*;/g, types);
+
+        // Write out our new options
+        console.log("createOptionsMiddleware about to write new _options with: " + optionsScss +"\n\n");
+        fs.writeFile(dest, optionsScss, function(err) {
+            if(err) {
+                console.log(err);
+                next(new Error('Issue writing file'));
+            }
+            // Save our updated _options.scss in request
+            request.optionsScss = optionsScss;
+
+            // Since compass middleware is next in "chain", it will compile our scss
+            console.log('createOptionsMiddleware ... before calling next()');
+            next();
+        });
     });
 }
 
 function compassCompileMiddleware(request, response, next) {
-    console.log('In compassCompileMiddleware...');
+    console.log('compassCompileMiddleware entered...');
     var module = request.params.module;
     var sassDir = path.join(__dirname, module+'/scss');
     var cssDir = path.join(__dirname, module+'/css');
@@ -101,6 +119,18 @@ function compassCompileMiddleware(request, response, next) {
     });
 }
 
+// Write back our original _options.scss
+function restoreOptions(request, module) {
+    var dest = path.resolve('.', module + '/scss/partials/_options.scss');
+    console.log('restoreOptions: writing back original '+dest);
+    fs.writeFile(dest, request.originalOptionsScss, function(err) {
+        if(err) {
+            console.log(err);
+            return (new Error('Issue writing '+dest));
+        }
+        console.log('compassCompileMiddleware: '+dest+' written.');
+    });
+}
 // Custom middleware to control ordering; we need to ensure that the _options.scss
 // partial is written out BEFORE the compass middleware does compilation.
 var mw = [createOptionsMiddleware, compassCompileMiddleware];
@@ -112,6 +142,7 @@ app.get('/build/:module', mw, function(request, response) {
     var json = {};
     json[module] = request[module].css;
     json.optionsScss = request.optionsScss;
+    restoreOptions(request, module);
     response.jsonp(json);
 });
 
@@ -136,8 +167,10 @@ app.get('/download/:module', mw, function(request, response) {
         if(code !== 0) {
             response.statusCode = 200;
             console.log('zip process exited with code ' + code);
+            restoreOptions(request, module);
             response.end();
         } else {
+            restoreOptions(request, module);
             response.end();
         }
     });
