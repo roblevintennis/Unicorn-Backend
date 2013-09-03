@@ -152,7 +152,27 @@ app.get('/download/:module', mw, function(request, response) {
     console.log('GOT IN /download/'+module+' route...');
     // Note that the second - option is to redirect to stdout
     var moduleDir = module+'/';
-    var zip = spawn('zip', ['-r', '-', moduleDir]);
+
+
+    // Zip options:
+    // single dash ("-") used as file name will write to stdout
+    // -x is shorthand for --exclude
+    var opts = ['-r', '-', moduleDir, '-x'];
+    // Now push all excluded files
+    opts.push(moduleDir + '*.git*');
+    opts.push(moduleDir + '.gitignore');
+    opts.push(moduleDir + '*.sass-cache*');
+    opts.push(moduleDir + 'Buttons-Custom.zip');
+    opts.push(moduleDir + 'Gruntfile.js');
+    opts.push(moduleDir + 'humans.txt');
+    opts.push(moduleDir + '*dist*');
+    opts.push(moduleDir + 'package.json');
+    opts.push(moduleDir + 'index.html');
+    opts.push(moduleDir + 'index.dev.html');
+    opts.push(moduleDir + 'README.md');
+
+    // Zip moduleDir recursively
+    var zip = spawn('zip', opts);
     response.contentType('zip');
     // Keep writing stdout to response
     zip.stdout.on('data', function (data) {
