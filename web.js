@@ -54,11 +54,43 @@ function generateTypesFromRequest(request) {
     // TODO: Throw a 404 if none of these match
 }
 
+function generateFontsFromRequest(request) {
+    // Generic fonts must be left unquoted so the engine doesn't literally look
+    // for something like 'monospace' etc.
+    // http://www.w3.org/TR/CSS2/fonts.html#generic-font-families
+    // initial and default are reserved for future use
+    var genericFontFamilies = ['serif', 'sans-serif', 'cursive', 'fantasy', 'monospace', 'initial', 'default'];
+
+    var module = request.params.module;
+    if (module === 'buttons' && request.query['btn-font-family']) {
+        var fontFams = request.query['btn-font-family'];
+        var str = '';
+        _.each(fontFams, function(font) {
+            // Check if this is a generic font like serif cursive etc...
+            if (_.indexOf(genericFontFamilies, font) > -1) {
+                // Generic font families must by unquoted
+                str += font + ', ';
+            } else {
+                // Quote all non generic font families
+                str += '"' + font + '", ';
+            }
+        });
+        //create full css rule in key: val form
+        //also: remove leftover trailing space/comma at end and add semi-colon
+        str = '$uni-btn-font-family: ' + str.substr(0, str.length-2);
+        str += ';';
+        return str;
+    } else if (module === 'grids') {//TODO / NOP
+    } else {}
+    // TODO: Throw a 404 if none of these match
+}
+
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
     console.log("createOptionsMiddleware entered...");
     var module = request.params.module;
     var types = generateTypesFromRequest(request);
+    var fonts = generateFontsFromRequest(request);
 
     // Read in _options.scss file
     console.log("createOptionsMiddleware about to read _options...");
@@ -74,8 +106,12 @@ function createOptionsMiddleware(request, response, next) {
         // Replace $uni-btn-types line with our generated types
         var optionsScss = data.replace(/\$uni\-btn\-types:.*;/g, types);
 
+        // Replace font family
+        optionsScss = optionsScss.replace(/\$uni\-btn\-font\-family:.*;/g, fonts);
+
         // Write out our new options
         console.log("createOptionsMiddleware about to write new _options with: " + optionsScss +"\n\n");
+
         fs.writeFile(dest, optionsScss, function(err) {
             if(err) {
                 console.log(err);
@@ -86,6 +122,7 @@ function createOptionsMiddleware(request, response, next) {
 
             // Since compass middleware is next in "chain", it will compile our scss
             console.log('createOptionsMiddleware ... before calling next()');
+
             next();
         });
     });
