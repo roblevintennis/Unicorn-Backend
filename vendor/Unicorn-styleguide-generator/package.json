@@ -1,0 +1,21 @@
+{
+  "name": "Unicorn-generate-styleguide",
+  "description": "Generates Styleguide from Unicorn Modules.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/roblevintennis/unicorn-styleguide-generator",
+  "author": {
+    "name": "Rob Levin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:roblevintennis/unicorn-styleguide-generator.git"
+  },
+  "dependencies": {
+    "commander": "~2.0.0",
+    "mkdirp": "~0.3.5",
+    "fs-extra": "~0.6.3"
+  },
+  "devDependencies": {
+    "jsdoc": "~3.2.0"
+  }
+}
