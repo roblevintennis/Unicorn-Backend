@@ -104,7 +104,19 @@ function generateActionsFromRequest(request) {
     } else {}
     // TODO: Throw a 404 if none of these match
 }
-
+function replaceSimpleOption(request, property, optionsScss, isQuoted) {
+    // Grab the value
+    var val = request.query[property];
+    // Convert to $uni namespaced property key
+    var uni = '$uni-' + property;
+    // Safely escape the hyphens for regex preparation
+    // Essentially, finds whole line matching rule to semi-colon (escapes $)
+    var regex = new RegExp('\\'+uni+':.*;', 'g');
+    // Replaces appropriate line with new value sent up
+    var newval = isQuoted ? uni +': "' + val + '";' : uni +': ' + val + ';';
+    optionsScss = optionsScss.replace(regex, newval);
+    return optionsScss;
+}
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
     console.log("createOptionsMiddleware entered...");
@@ -135,15 +147,10 @@ function createOptionsMiddleware(request, response, next) {
 
         // Replace the rest of the simple unquoted properties
         _.each(['btn-font-color', 'btn-font-size', 'btn-font-weight'], function(property) {
-            // Grab the value
-            var val = request.query[property];
-            // Convert to $uni namespaced property key
-            var uni = '$uni-' + property;
-            // Safely escape the hyphens for regex preparation
-            // Essentially, finds whole line matching rule to semi-colon (escapes $)
-            var regex = new RegExp('\\'+uni+':.*;', 'g');
-            // Replaces appropriate line with new value sent up
-            optionsScss = optionsScss.replace(regex, uni +': ' + val + ';');
+            optionsScss = replaceSimpleOption(request, property, optionsScss, false);
+        });
+        _.each(['btn-namespace', 'btn-glow-namespace'], function(property) {
+            optionsScss = replaceSimpleOption(request, property, optionsScss, true);
         });
 
         // Write out our new options
