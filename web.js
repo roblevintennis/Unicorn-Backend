@@ -135,6 +135,48 @@ function restoreOptions(request, module) {
 // partial is written out BEFORE the compass middleware does compilation.
 var mw = [createOptionsMiddleware, compassCompileMiddleware];
 
+
+/**
+ * Creates a styleguide sub-directory inside our module. Note that it will
+ * place the combined module and styleguide in to ./generated directory.
+ */
+function styleguide(request, module, fn) {
+    // console.log("styleguide entered...");
+    // Remove any trailing forward slash as in buttons/
+    module = module ? module.replace(/\/$/, '') : null;
+    // console.log("styleguide: module - " + module);
+    if (!module) {
+        fn(new Error('styleguide: no module provided'));
+    }
+
+    // If request has a build_styleguide param that's truthy
+    var isStyleguide = request.query.build_styleguide ? request.query.build_styleguide : false;
+
+    console.log("styleguide: isStyleguide - " + isStyleguide);
+    if (isStyleguide) {
+        // We'll put our generated module/styleguide stuff in `generated` dir
+        var generatedDir = 'generated';
+        var cmd = 'scripts/combine_buttons_and_styleguide.sh';
+        // Note that the forward slash after module is important! Ensures the
+        // contents of module/ are copied (not the directory as a whole)
+        cmd += ' --module-dir ' + module + '/ --output-dir ' + generatedDir;
+        exec(cmd, function (err, stdout, stderr) {
+            if (err) {
+                console.log(err);
+                fn(new Error('Issue generating styleguide'));
+            } else {
+                console.log('Styleguide generated');
+                fn(generatedDir + path.sep);
+            }
+        });
+    } else {
+        // HTTP request did not contain truthy build_styleguide param so
+        // return original moduleDir
+        // console.log('styleguide: no styleguide requested ... returning: ' + module + path.sep);
+        fn(module + path.sep);
+    }
+}
+
 // We use some custom "route-specific middleware" here. See http://www.screenr.com/elL
 app.get('/build/:module', mw, function(request, response) {
     var module = request.params.module;
@@ -146,53 +188,56 @@ app.get('/build/:module', mw, function(request, response) {
     response.jsonp(json);
 });
 
+
 app.get('/download/:module', mw, function(request, response) {
     'use strict';
     var module = request.params.module;
     console.log('GOT IN /download/'+module+' route...');
-    // Note that the second - option is to redirect to stdout
-    var moduleDir = module+'/';
 
+    // Only creates a styleguide if build_styleguide flag in request
+    styleguide(request, module, function(moduleDir) {
 
-    // Zip options:
-    // single dash ("-") used as file name will write to stdout
-    // -x is shorthand for --exclude
-    var opts = ['-r', '-', moduleDir, '-x'];
-    // Now push all excluded files
-    opts.push(moduleDir + '*.git*');
-    opts.push(moduleDir + '.gitignore');
-    opts.push(moduleDir + '*.sass-cache*');
-    opts.push(moduleDir + 'Buttons-Custom.zip');
-    opts.push(moduleDir + 'Gruntfile.js');
-    opts.push(moduleDir + 'humans.txt');
-    opts.push(moduleDir + '*dist*');
-    opts.push(moduleDir + 'package.json');
-    opts.push(moduleDir + 'index.html');
-    opts.push(moduleDir + 'index.dev.html');
-    opts.push(moduleDir + 'README.md');
+        console.log('Called back from styleguide with: ' + moduleDir);
+        // Zip options:
+        // single dash ("-") used as file name will write to stdout
+        // the -x is shorthand for --exclude
+        var opts = ['-r', '-', moduleDir, '-x'];
+        // Now push all excluded files
+        opts.push(moduleDir + '*.git*');
+        opts.push(moduleDir + '.gitignore');
+        opts.push(moduleDir + '*.sass-cache*');
+        opts.push(moduleDir + 'Buttons-Custom.zip');
+        opts.push(moduleDir + 'Gruntfile.js');
+        opts.push(moduleDir + 'humans.txt');
+        opts.push(moduleDir + '*dist*');
+        opts.push(moduleDir + 'package.json');
+        opts.push(moduleDir + 'index.html');
+        opts.push(moduleDir + 'index.dev.html');
+        opts.push(moduleDir + 'README.md');
 
-    // Zip moduleDir recursively
-    var zip = spawn('zip', opts);
-    response.contentType('zip');
-    // Keep writing stdout to response
-    zip.stdout.on('data', function (data) {
-        response.write(data);
-    });
-    // zip.stderr.on('data', function (data) {
-    //     console.log('zip stderr: ' + data);
-    // });
+        // Zip moduleDir recursively
+        var zip = spawn('zip', opts);
+        response.contentType('zip');
+        // Keep writing stdout to response
+        zip.stdout.on('data', function (data) {
+            response.write(data);
+        });
+        // zip.stderr.on('data', function (data) {
+        //     console.log('zip stderr: ' + data);
+        // });
 
-    // Once we're done zipping, respond
-    zip.on('exit', function (code) {
-        if(code !== 0) {
-            response.statusCode = 200;
-            console.log('zip process exited with code ' + code);
-            restoreOptions(request, module);
-            response.end();
-        } else {
-            restoreOptions(request, module);
-            response.end();
-        }
+        // Once we're done zipping, respond
+        zip.on('exit', function (code) {
+            if(code !== 0) {
+                response.statusCode = 200;
+                console.log('zip process exited with code ' + code);
+                restoreOptions(request, module);
+                response.end();
+            } else {
+                restoreOptions(request, module);
+                response.end();
+            }
+        });
     });
 });
 
