@@ -85,12 +85,33 @@ function generateFontsFromRequest(request) {
     // TODO: Throw a 404 if none of these match
 }
 
+function generateActionsFromRequest(request) {
+    console.log("generateActionsFromRequest entered...");
+    var buttonActions = '',
+        module = request.params.module;
+
+    if (module === 'buttons' && request.query['btn-actions']) {
+        var actions = request.query['btn-actions'];
+        console.log("actions from request query: ", actions);
+        _.each(actions, function (action) {
+            buttonActions += "('" +action.name+ "' " +action.background+" "+action.color+ ") ";
+        });
+        buttonActions += ';';
+        buttonActions = '$uni-btn-actions: ' + buttonActions;
+        console.log("buttonActions built: ", buttonActions);
+        return buttonActions;
+    } else if (module === 'grids') {//TODO / NOP
+    } else {}
+    // TODO: Throw a 404 if none of these match
+}
+
 // Custom middleware to create our _options.scss partial. Must go before compass middleware!
 function createOptionsMiddleware(request, response, next) {
     console.log("createOptionsMiddleware entered...");
     var module = request.params.module;
     var types = generateTypesFromRequest(request);
     var fonts = generateFontsFromRequest(request);
+    var actions = generateActionsFromRequest(request);
 
     // Read in _options.scss file
     console.log("createOptionsMiddleware about to read _options...");
@@ -108,6 +129,22 @@ function createOptionsMiddleware(request, response, next) {
 
         // Replace font family
         optionsScss = optionsScss.replace(/\$uni\-btn\-font\-family:.*;/g, fonts);
+
+        // Replace actions
+        optionsScss = optionsScss.replace(/\$uni\-btn\-actions:.*;/g, actions);
+
+        // Replace the rest of the simple unquoted properties
+        _.each(['btn-font-color', 'btn-font-size', 'btn-font-weight'], function(property) {
+            // Grab the value
+            var val = request.query[property];
+            // Convert to $uni namespaced property key
+            var uni = '$uni-' + property;
+            // Safely escape the hyphens for regex preparation
+            // Essentially, finds whole line matching rule to semi-colon (escapes $)
+            var regex = new RegExp('\\'+uni+':.*;', 'g');
+            // Replaces appropriate line with new value sent up
+            optionsScss = optionsScss.replace(regex, uni +': ' + val + ';');
+        });
 
         // Write out our new options
         console.log("createOptionsMiddleware about to write new _options with: " + optionsScss +"\n\n");
