@@ -10,7 +10,8 @@ var express = require('express'),
     styleguide = require('./lib/styleguide').styleguide,
     compassCompileMiddleware = require('./lib/compiler').compassCompileMiddleware,
     createOptionsMiddleware = require('./lib/options').createOptionsMiddleware,
-    restoreOptions = require('./lib/options').restoreOptions;
+    restoreOptions = require('./lib/options').restoreOptions,
+    safetyFirst = require('./lib/safe.js').safetyFirst;
 
 app.configure(function() {
     'use strict';
@@ -46,6 +47,7 @@ function errorHandler(err, req, res, next) {
 // BEFORE the compass middleware does compilation.
 var customMiddleware = [
         //Ordering here is top to bottom
+        safetyFirst,//copy module dir over since we mutate ... safety first :)
         createOptionsMiddleware,
         compassCompileMiddleware
     ];

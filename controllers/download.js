@@ -5,7 +5,7 @@ var spawn = require('child_process').spawn,
 
 function downloadModule(request, response) {
     'use strict';
-    var module = request.params.module;
+    var module = request.workingDirectory;
     console.log('GOT IN /download/'+module+' route...');
 
     // Only creates a styleguide if build_styleguide flag in request
