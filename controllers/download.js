@@ -1,7 +1,7 @@
 var spawn = require('child_process').spawn,
     path = require('path'),
-    styleguide = require(path.join(__dirname, '../lib/styleguide')).styleguide,
-    restoreOptions = require(path.join(__dirname, '../lib/options')).restoreOptions;
+    utils = require(path.join(__dirname, '../lib/', 'utils')).utils;
+    styleguide = require(path.join(__dirname, '../lib/styleguide')).styleguide;
 
 function downloadModule(request, response) {
     'use strict';
@@ -10,7 +10,7 @@ function downloadModule(request, response) {
 
     // Only creates a styleguide if build_styleguide flag in request
     styleguide(request, module, function(moduleDir) {
-
+        // Styleguide might have ammended dirname; so reset workingDirectory
         console.log('Called back from styleguide with: ' + moduleDir);
         // Zip options:
         // single dash ("-") used as file name will write to stdout
@@ -45,11 +45,23 @@ function downloadModule(request, response) {
             if(code !== 0) {
                 response.statusCode = 200;
                 console.log('zip process exited with code ' + code);
-                restoreOptions(request, module);
-                response.end();
+                utils.cleanup(request, function(err) {
+                    if (!err) {
+                        response.end();
+                    } else {
+                        response.status(500);
+                        response.render('error', { error: err });
+                    }
+                });
             } else {
-                restoreOptions(request, module);
-                response.end();
+                utils.cleanup(request, function(err) {
+                    if (!err) {
+                        response.end();
+                    } else {
+                        response.status(500);
+                        response.render('error', { error: err });
+                    }
+                });
             }
         });
     });

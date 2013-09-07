@@ -1,7 +1,7 @@
 /*jshint multistr: true */
 var express = require('express'),
     path = require('path'),
-    fs = require('fs'),
+    fs = require('fs-extra'),
     _ = require('underscore'),
     exec = require('child_process').exec,
     spawn = require('child_process').spawn,
@@ -10,7 +10,6 @@ var express = require('express'),
     styleguide = require('./lib/styleguide').styleguide,
     compassCompileMiddleware = require('./lib/compiler').compassCompileMiddleware,
     createOptionsMiddleware = require('./lib/options').createOptionsMiddleware,
-    restoreOptions = require('./lib/options').restoreOptions,
     safetyFirst = require('./lib/safe.js').safetyFirst;
 
 app.configure(function() {

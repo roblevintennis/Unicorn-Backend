@@ -1,5 +1,5 @@
 var path = require('path'),
-    restoreOptions = require(path.join(__dirname, '../lib/options')).restoreOptions;
+    utils = require(path.join(__dirname, '../lib/', 'utils')).utils;
 
 function buildModule (request, response) {
     console.log("****** NEW BUILD CONTROLLER *****");
@@ -8,8 +8,14 @@ function buildModule (request, response) {
     var json = {};
     json[module] = request[module].css;
     json.optionsScss = request.optionsScss;
-    restoreOptions(request, module);
-    response.jsonp(json);
+    utils.cleanup(request, function(err) {
+        if (!err) {
+            response.jsonp(json);
+        } else {
+            response.status(500);
+            response.render('error', { error: err });
+        }
+    });
 }
 
 module.exports.buildModule = buildModule;
