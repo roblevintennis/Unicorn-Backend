@@ -2,7 +2,6 @@ var path = require('path'),
     utils = require(path.join(__dirname, '../lib/', 'utils')).utils;
 
 function buildModule (request, response) {
-    console.log("****** NEW BUILD CONTROLLER *****");
     var module = request.params.module;
     console.log('GOT IN /build/'+module+' route...');
     var json = {};
