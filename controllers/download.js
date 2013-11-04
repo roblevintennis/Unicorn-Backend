@@ -28,6 +28,12 @@ function downloadModule(request, response) {
         opts.push(moduleDir + 'index.html');
         opts.push(moduleDir + 'index.dev.html');
         opts.push(moduleDir + 'README.md');
+        opts.push(moduleDir + 'css/prettify.css');
+        opts.push(moduleDir + 'css/main.css');
+        opts.push(moduleDir + 'scss/main.scss');
+        opts.push(moduleDir + 'js/main.js');
+        opts.push(moduleDir + 'js/app/*');
+        opts.push(moduleDir + 'js/vendor/*');
 
         // Zip moduleDir recursively
         var zip = spawn('zip', opts);
