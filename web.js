@@ -17,30 +17,12 @@ app.configure(function() {
     app.use(express.logger());
     app.use(express.compress());
     app.use(express.bodyParser());
-    app.use(logErrors);
-    app.use(clientErrorHandler);
-    app.use(errorHandler);
+
 });
 // app.configure('development', function(){})
 // app.configure('production', function(){})
 app.enable('jsonp callback');
 
-//TODO: These are from docs ... rework later
-function logErrors(err, req, res, next) {
-    console.error(err.stack);
-    next(err);
-}
-function clientErrorHandler(err, req, res, next) {
-    if (req.xhr) {
-        res.send(500, { error: 'Something blew up!' });
-    } else {
-        next(err);
-    }
-}
-function errorHandler(err, req, res, next) {
-    res.status(500);
-    res.render('error', { error: err });
-}
 
 // Custom middleware - ensure that the _options.scss partial is written out
 // BEFORE the compass middleware does compilation.
@@ -51,7 +33,9 @@ var customMiddleware = [
         compassCompileMiddleware
     ];
 
-// **** ROUTES **** //
+//////////////////////////////////////////////////////////
+///////////////////////// ROUTES /////////////////////////
+//////////////////////////////////////////////////////////
 var buildModule = require('./controllers/build').buildModule;
 app.get('/build/:module', customMiddleware, buildModule);
 
@@ -64,3 +48,18 @@ app.listen(port, function() {
     console.log('Listening on '+ port);
 });
 
+
+//////////////////////////////////////////////////////////
+//////////////////// ERROR MIDDLEWARE ////////////////////
+//////////////////////////////////////////////////////////
+function logErrors(err, req, res, next) {
+    console.error(err.stack);
+    next(err);
+}
+function errorHandler(err, req, res, next) {
+    //We purposely use status 200 since using jsonp and let client handle
+    res.jsonp(200, {error: true, message: err.message || 'Server Error'});
+}
+// Add middleware (note this must be added > routes)
+app.use(logErrors);
+app.use(errorHandler);
