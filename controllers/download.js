@@ -30,21 +30,21 @@ function downloadModule(request, response) {
           .append(fs.createReadStream(partials+'_glow.scss'), { name: 'scss/partials/_glow.scss' })
           .append(fs.createReadStream(partials+'_danger.scss'), { name: 'scss/partials/_danger.scss' });
 
-        // Once response stream close event fires, we want to remove the tmp buttons dir
-        response.on('close', function() {
-            console.log('response close event fired ... doing cleanup next...');
-            utils.cleanup(request, function(err) {
-                if (err) {
-                    console.log('Issue in cleanup.');
-                    response.status(500);
-                    response.render('error', { error: err });
-                }
-            });
-        });
         archive.on('error', function(err) {
             console.log('archive error callback: ' + err);
             response.status(500);
             response.render('error', { error: err });
+        });
+
+        response.on('finish', function() {
+            console.log('response.finish event fired .. doing cleanup next...');
+            utils.cleanup(request, function(err) {
+                if (err) {
+                    //TODO: Not sure there's a meanginful way for user...
+                    //this should at least show up in heroku logs ;)
+                    console.error('Issue in utils.cleanup: ' + err);
+                }
+            });
         });
         archive.finalize(function(err, bytes) {
             if (err) {
