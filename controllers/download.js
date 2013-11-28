@@ -1,7 +1,9 @@
 var spawn = require('child_process').spawn,
+    fs = require('fs'),
     path = require('path'),
-    utils = require(path.join(__dirname, '../lib/', 'utils')).utils;
-    styleguide = require(path.join(__dirname, '../lib/styleguide')).styleguide;
+    utils = require(path.join(__dirname, '../lib/', 'utils')).utils,
+    styleguide = require(path.join(__dirname, '../lib/styleguide')).styleguide,
+    archiver = require('archiver');
 
 function downloadModule(request, response) {
     'use strict';
@@ -12,63 +14,45 @@ function downloadModule(request, response) {
     styleguide(request, module, function(moduleDir) {
         // Styleguide might have ammended dirname; so reset workingDirectory
         console.log('Called back from styleguide with: ' + moduleDir);
-        // Zip options:
-        // single dash ("-") used as file name will write to stdout
-        // the -x is shorthand for --exclude
-        var opts = ['-r', '-', moduleDir, '-x'];
-        // Now push all excluded files
-        opts.push(moduleDir + '*.git*');
-        opts.push(moduleDir + '.gitignore');
-        opts.push(moduleDir + '*.sass-cache*');
-        opts.push(moduleDir + 'Buttons-Custom.zip');
-        opts.push(moduleDir + 'Gruntfile.js');
-        opts.push(moduleDir + 'humans.txt');
-        opts.push(moduleDir + '*dist*');
-        opts.push(moduleDir + 'package.json');
-        opts.push(moduleDir + 'index.html');
-        opts.push(moduleDir + 'index.dev.html');
-        opts.push(moduleDir + 'README.md');
-        opts.push(moduleDir + 'css/prettify.css');
-        opts.push(moduleDir + 'css/main.css');
-        opts.push(moduleDir + 'scss/main.scss');
-        opts.push(moduleDir + 'js/main.js');
-        opts.push(moduleDir + 'js/app/*');
-        opts.push(moduleDir + 'js/vendor/*');
 
-        // Zip moduleDir recursively
-        var zip = spawn('zip', opts);
-        response.contentType('zip');
-        // Keep writing stdout to response
-        zip.stdout.on('data', function (data) {
-            response.write(data);
+        // Create archiver, pipe to the response stream and append read streams to archiver
+        var archive = archiver('zip');
+        archive.pipe(response);
+        var css = moduleDir + '/css/buttons.css';
+        var scss = moduleDir + '/scss/';
+        var partials = scss + 'partials/';
+        archive
+          .append(fs.createReadStream(moduleDir + 'config.rb'), { name: 'config.rb' })
+          .append(fs.createReadStream(css), { name: 'css/buttons.css' })
+          .append(fs.createReadStream(scss+'buttons.scss'), { name: 'scss/buttons.scss' })
+          .append(fs.createReadStream(partials+'_options.scss'), { name: 'scss/partials/_options.scss' })
+          .append(fs.createReadStream(partials+'_buttons.scss'), { name: 'scss/partials/_buttons.scss' })
+          .append(fs.createReadStream(partials+'_glow.scss'), { name: 'scss/partials/_glow.scss' })
+          .append(fs.createReadStream(partials+'_danger.scss'), { name: 'scss/partials/_danger.scss' });
+
+        // Once response stream close event fires, we want to remove the tmp buttons dir
+        response.on('close', function() {
+            console.log('response close event fired ... doing cleanup next...');
+            utils.cleanup(request, function(err) {
+                if (err) {
+                    console.log('Issue in cleanup.');
+                    response.status(500);
+                    response.render('error', { error: err });
+                }
+            });
         });
-        // zip.stderr.on('data', function (data) {
-        //     console.log('zip stderr: ' + data);
-        // });
-
-        // Once we're done zipping, respond
-        zip.on('exit', function (code) {
-            if(code !== 0) {
-                response.statusCode = 200;
-                console.log('zip process exited with code ' + code);
-                utils.cleanup(request, function(err) {
-                    if (!err) {
-                        response.end();
-                    } else {
-                        response.status(500);
-                        response.render('error', { error: err });
-                    }
-                });
-            } else {
-                utils.cleanup(request, function(err) {
-                    if (!err) {
-                        response.end();
-                    } else {
-                        response.status(500);
-                        response.render('error', { error: err });
-                    }
-                });
+        archive.on('error', function(err) {
+            console.log('archive error callback: ' + err);
+            response.status(500);
+            response.render('error', { error: err });
+        });
+        archive.finalize(function(err, bytes) {
+            if (err) {
+                console.log('archive finalize callback error: ' + err);
+                response.status(500);
+                response.render('error', { error: err });
             }
+            // console.log(bytes + ' total bytes');
         });
     });
 }
