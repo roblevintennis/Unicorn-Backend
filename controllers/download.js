@@ -18,10 +18,12 @@ function downloadModule(request, response) {
         // Create archiver, pipe to the response stream and append read streams to archiver
         var archive = archiver('zip');
         archive.pipe(response);
-        var dir = path.resolve(__dirname + path.sep + '..', moduleDir);
-        var css = dir + '/css/buttons.css';
-        var scss = dir + '/scss/';
-        var partials = scss + 'partials/';
+
+        var dir =  path.join(__dirname, '..', moduleDir);
+        var css =  path.join(dir, '/css/buttons.css');
+        var scss = path.join(dir, '/scss/');
+        var partials = path.join(scss, 'partials/');
+
         archive
           .append(fs.createReadStream(moduleDir + 'config.rb'), { name: 'config.rb' })
           .append(fs.createReadStream(css), { name: 'css/buttons.css' })
