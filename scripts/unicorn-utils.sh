@@ -57,7 +57,6 @@ parseCLIArgs "$@"
 
 ### Only generate styleguide if --copy-only NOT set
 if [ $COPY_ONLY -eq 0 ]; then
-    set -x
     ##### CREATE TMP DIR ####
     # e.g. this creates <root>/tmp-directory and copies module over
     echo "Creating tmp dir..."
