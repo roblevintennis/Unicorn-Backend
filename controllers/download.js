@@ -21,6 +21,7 @@ function downloadModule(request, response) {
 
         var dir =  path.join(__dirname, '..', moduleDir);
         var css =  path.join(dir, '/css/buttons.css');
+        var jsButtons =  path.join(dir, '/js/buttons.js');
         var scss = path.join(dir, '/scss/');
         var partials = path.join(scss, 'partials/');
 
@@ -28,6 +29,7 @@ function downloadModule(request, response) {
         archive
           .append(fs.createReadStream(dir + 'config.rb'), { name: 'config.rb' })
           .append(fs.createReadStream(css), { name: 'css/buttons.css' })
+          .append(fs.createReadStream(jsButtons), { name: 'js/buttons.js' })
           .append(fs.createReadStream(scss+'buttons.scss'), { name: 'scss/buttons.scss' })
           .append(fs.createReadStream(partials+'_options.scss'), { name: 'scss/partials/_options.scss' })
           .append(fs.createReadStream(partials+'_buttons.scss'), { name: 'scss/partials/_buttons.scss' })
