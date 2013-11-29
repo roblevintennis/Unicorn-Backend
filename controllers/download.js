@@ -30,40 +30,53 @@ console.log("scss: " + scss);
 console.log("partials: " + partials);
 
 
-console.log("About to start archiving...");
-        archive
-          .append(fs.createReadStream(dir + 'config.rb'), { name: 'config.rb' })
-          .append(fs.createReadStream(css), { name: 'css/buttons.css' })
-          .append(fs.createReadStream(scss+'buttons.scss'), { name: 'scss/buttons.scss' })
-          .append(fs.createReadStream(partials+'_options.scss'), { name: 'scss/partials/_options.scss' })
-          .append(fs.createReadStream(partials+'_buttons.scss'), { name: 'scss/partials/_buttons.scss' })
-          .append(fs.createReadStream(partials+'_glow.scss'), { name: 'scss/partials/_glow.scss' })
-          .append(fs.createReadStream(partials+'_danger.scss'), { name: 'scss/partials/_danger.scss' });
+///// DEBUGGING with a listing of directory:
+// exec('ls -al',function(err,stdout,stderr){
+            console.log("DEBUGGING-ls of: " + dir + " next...");
 
-        archive.on('error', function(err) {
-            console.log('archive error callback: ' + err);
-            response.status(500);
-            response.render('error', { error: err });
-        });
-
-        response.on('finish', function() {
-            console.log('response.finish event fired .. doing cleanup next...');
-            utils.cleanup(request, function(err) {
-                if (err) {
-                    //TODO: Not sure there's a meanginful way for user...
-                    //this should at least show up in heroku logs ;)
-                    console.error('Issue in utils.cleanup: ' + err);
+            exec('ls -hal ' + dir, function(err, stdout, stderr) {
+                console.log("Directory listing stdout: ");
+                console.log('stdout: ' + stdout);
+                console.log('stderr: ' + stderr);
+                if (err !== null) {
+                  console.log('exec err: ' + err);
                 }
             });
-        });
-        archive.finalize(function(err, bytes) {
-            if (err) {
-                console.log('archive finalize callback error: ' + err);
-                response.status(500);
-                response.render('error', { error: err });
-            }
-            // console.log(bytes + ' total bytes');
-        });
+
+        // console.log("About to start archiving...");
+        // archive
+        //   .append(fs.createReadStream(dir + 'config.rb'), { name: 'config.rb' })
+        //   .append(fs.createReadStream(css), { name: 'css/buttons.css' })
+        //   .append(fs.createReadStream(scss+'buttons.scss'), { name: 'scss/buttons.scss' })
+        //   .append(fs.createReadStream(partials+'_options.scss'), { name: 'scss/partials/_options.scss' })
+        //   .append(fs.createReadStream(partials+'_buttons.scss'), { name: 'scss/partials/_buttons.scss' })
+        //   .append(fs.createReadStream(partials+'_glow.scss'), { name: 'scss/partials/_glow.scss' })
+        //   .append(fs.createReadStream(partials+'_danger.scss'), { name: 'scss/partials/_danger.scss' });
+
+        // archive.on('error', function(err) {
+        //     console.log('archive error callback: ' + err);
+        //     response.status(500);
+        //     response.render('error', { error: err });
+        // });
+
+        // response.on('finish', function() {
+        //     console.log('response.finish event fired .. doing cleanup next...');
+        //     utils.cleanup(request, function(err) {
+        //         if (err) {
+        //             //TODO: Not sure there's a meanginful way for user...
+        //             //this should at least show up in heroku logs ;)
+        //             console.error('Issue in utils.cleanup: ' + err);
+        //         }
+        //     });
+        // });
+        // archive.finalize(function(err, bytes) {
+        //     if (err) {
+        //         console.log('archive finalize callback error: ' + err);
+        //         response.status(500);
+        //         response.render('error', { error: err });
+        //     }
+        //     // console.log(bytes + ' total bytes');
+        // });
     });
 }
 
