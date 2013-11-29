@@ -33,7 +33,7 @@ console.log("partials: " + partials);
 ///// DEBUGGING with a listing of directory:
 // exec('ls -al',function(err,stdout,stderr){
             console.log("DEBUGGING-ls of: " + dir + " next...");
-
+            var exec = require('child_process').exec;
             exec('ls -hal ' + dir, function(err, stdout, stderr) {
                 console.log("Directory listing stdout: ");
                 console.log('stdout: ' + stdout);
@@ -42,6 +42,7 @@ console.log("partials: " + partials);
                   console.log('exec err: ' + err);
                 }
             });
+///// ENDS: DEBUGGING
 
         // console.log("About to start archiving...");
         // archive
