@@ -83,9 +83,6 @@ else
     cp -R "$ROOT/$MODULE_DIR" $OUTPUT_DIR
 fi
 
-echo "Here's a listing of tmp dir after copy: "
-ls -halF "$ROOT/$TMP"
-
 popd;
 echo "All done"
 exit 0
