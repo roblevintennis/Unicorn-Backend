@@ -57,12 +57,14 @@ parseCLIArgs "$@"
 
 ### Only generate styleguide if --copy-only NOT set
 if [ $COPY_ONLY -eq 0 ]; then
+    set -x
     ##### CREATE TMP DIR ####
     # e.g. this creates <root>/tmp-directory and copies module over
     echo "Creating tmp dir..."
     pushd $ROOT;
     mkdir "$ROOT/$TMP"
     ##### COPY MODULE TO TMP DIR ####
+    echo "Copying module to tmp dir..."
     cp -R "$ROOT/$MODULE_DIR" "$ROOT/$TMP"
     ##### RUN STYLEGUIDE STYLEGUIDE_GENERATOR_SCRIPT ####
     # Run uni-generate-styleguide.js and place in temp dir
@@ -77,8 +79,12 @@ if [ $COPY_ONLY -eq 0 ]; then
 else
     # Copy only
     rm -rf $OUTPUT_DIR # in case exists already
+    echo "Copying module to tmp dir..."
     cp -R "$ROOT/$MODULE_DIR" $OUTPUT_DIR
 fi
+
+echo "Here's a listing of tmp dir after copy: "
+ls -halF "$ROOT/$TMP"
 
 popd;
 echo "All done"
