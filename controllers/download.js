@@ -24,6 +24,14 @@ function downloadModule(request, response) {
         var scss = path.join(dir, '/scss/');
         var partials = path.join(scss, 'partials/');
 
+        
+console.log("read stream css...");
+fs.createReadStream(css);
+console.log("read stream scss...");
+fs.createReadStream(scss+'buttons.scss');
+console.log("read stream config.rb...");
+fs.createReadStream(dir + 'config.rb');
+
         archive
           .append(fs.createReadStream(dir + 'config.rb'), { name: 'config.rb' })
           .append(fs.createReadStream(css), { name: 'css/buttons.css' })
