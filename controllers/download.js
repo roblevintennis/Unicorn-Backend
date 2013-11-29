@@ -23,15 +23,14 @@ function downloadModule(request, response) {
         var css =  path.join(dir, '/css/buttons.css');
         var scss = path.join(dir, '/scss/');
         var partials = path.join(scss, 'partials/');
+console.log("PATHS DEBUGGING: ");
+console.log("dir: " + dir);
+console.log("css: " + css);
+console.log("scss: " + scss);
+console.log("partials: " + partials);
 
-        
-console.log("read stream css...");
-fs.createReadStream(css);
-console.log("read stream scss...");
-fs.createReadStream(scss+'buttons.scss');
-console.log("read stream config.rb...");
-fs.createReadStream(dir + 'config.rb');
 
+console.log("About to start archiving...");
         archive
           .append(fs.createReadStream(dir + 'config.rb'), { name: 'config.rb' })
           .append(fs.createReadStream(css), { name: 'css/buttons.css' })
