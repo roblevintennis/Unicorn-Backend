@@ -17,6 +17,10 @@ function downloadModule(request, response) {
 
         // Create archiver, pipe to the response stream and append read streams to archiver
         var archive = archiver('zip');
+
+        //Setting content-type explicitly fixes IE issue where there's no .zip extension
+        response.contentType('application/zip');
+
         archive.pipe(response);
 
         var dir =  path.join(__dirname, '..', moduleDir);
