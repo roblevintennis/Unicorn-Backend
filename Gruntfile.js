@@ -20,6 +20,6 @@ module.exports = function(grunt) {
         }
     });
     grunt.loadNpmTasks('grunt-contrib-compass');
-    grunt.registerTask('heroku', 'compass');
+    // grunt.registerTask('heroku', 'compass');
 };
 
