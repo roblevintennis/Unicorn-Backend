@@ -3,8 +3,8 @@ module.exports = function(grunt) {
         compass: {
             dist: {
                 options: {
-                    sassDir: 'scss',
-                    cssDir: 'css',
+                    sassDir: 'buttons/scss',
+                    cssDir: 'buttons/css',
                     force: true,
                     outputStyle: 'compressed',
                     environment: 'production'
@@ -12,14 +12,14 @@ module.exports = function(grunt) {
             },
             dev: {
                 options: {
-                    sassDir: 'scss',
-                    cssDir: 'css',
+                    sassDir: 'buttons/scss',
+                    cssDir: 'buttons/css',
                     force: true
                 }
             }
         }
     });
     grunt.loadNpmTasks('grunt-contrib-compass');
-    // grunt.registerTask('heroku', 'compass');
+    grunt.registerTask('heroku', 'compass');
 };
 
