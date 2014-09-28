@@ -16,7 +16,7 @@ Upon clicking the "Download" button the following happens behind the scenes:
 
 There are two main endpoints, "build" and "download". The only difference really is that download–in addition to configuring and compiling the module (which they both do)–will archive a zip and send back to client.
 
-### Configure Options & Compile
+### Configure Options & Compiler
 
 As mentioned, both configure and compile; this is because they both share the same custom middleware that runs before the controllers:
 
@@ -25,7 +25,7 @@ As mentioned, both configure and compile; this is because they both share the sa
 		safetyFirst,//copy module dir over since we mutate
 		createOptionsMiddleware,
 		compassCompileMiddleware];
-    
+
 So, as the names imply, we creat an options file (using regex replacement on an initial _options partial using the custom values the client sends up), and then we simply compile that module.
 
 *Note that we plan to change the regex replacement once the Buttons-2 projec is implemented. Essentially, we've broken up the modules as includes (as opposed to types). So, per the client's request, we will instead comment out or uncomment the type includes *
@@ -92,7 +92,7 @@ Ensure you have the heroku workbench installed (see [nodejs](https://devcenter.h
 	heroku apps:info # outputs: === options-compiler
 
 If you don't have:
-	
+
 	heroku git:clone --app options-compiler
 
 
@@ -106,14 +106,14 @@ Add your keys and pull the latest:
 ### Running builder locally
 
 First start the options-compiler locally via foreman:
-	
+
 	foreman start web
 
 Now you need to hit this from a client. The best way to do this is to also run the Buttons client locally using the `gh-pages` branch. Go to another directory and checkout that repo:
-	
+
 	git clone git@github.com:alexwolfe/Buttons.git
 	git checkout gh-pages
-	
+
 In the `js/app/setup.js` file toggle the `serverUrl` property to point to localhost:
 
             //serverUrl: 'http://options-compiler.herokuapp.com',
@@ -138,14 +138,14 @@ As you fire these client requests, the server console logs will be output to the
 ## Pushing changes:
 
 	git add .; git commit -m"YOUR MSG"; git push heroku master; #Takes long since downloads build packs!
-	
+
 View Heroku Site
 
 	heroku open
-	
+
 
 ### Debugging remote tips
-	
+
 	heroku logs --tail # tail the remote logs
 	heroku run bash # open remote in local terminal
 
