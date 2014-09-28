@@ -15,6 +15,7 @@
 
     <script type="text/javascript">
     $(function() {
+<<<<<<< HEAD
         var defaultOptions = {
           'btn-namespace': '.button',
           'btn-colors': [
@@ -131,6 +132,50 @@
         // Test straight up download using buttons.toJSON as our query string for window.open
         $('#download').click(function(e) {
             var params = $.param(defaultOptions);
+=======
+        // Test straight up download using buttons.toJSON as our query string for window.open
+        $('#download').click(function(e) {
+            var options = {
+                'name': 'buttons',
+                'types': ['pill', 'rounded'],
+                'btn-namespace': '.button',
+                'btn-name': 'button',
+                'btn-glow-namespace': '.glow',
+                'btn-glow-name': 'glow',
+                'btn-font-color': '#666',
+                'btn-font-size': '14px',
+                'btn-font-weight': '300',
+                'btn-font-family': ['Arial', 'sans-serif'],
+                'btn-actions': [
+                    {
+                        name: 'primary',
+                        background: '#00A1CB',
+                        color: '#FFFFFF'
+                    },
+                    {
+                        name: 'action',
+                        background: '#7db500',
+                        color: '#FFFFFF'
+                    },
+                    {
+                        name: 'highlight',
+                        background: '#F18D05',
+                        color: '#FFFFFF'
+                    },
+                    {
+                        name: 'caution',
+                        background: '#E54028',
+                        color: '#FFFFFF'
+                    },
+                    {
+                        name: 'royal',
+                        background: '#87318C',
+                        color: '#FFFFFF'
+                    }
+                ]
+            };
+            var params = $.param(options);
+>>>>>>> Updated test page for refactor WIP
             var url = 'http://localhost:5000/download/buttons?'+params;
             window.open(url, 'Download');
         });
