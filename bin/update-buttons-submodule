@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+#######################################
+## RUN FROM PROJECT ROOT DIRECTORY ####
+#######################################
+
+require 'open3'
+
+cmd = 'pushd buttons; git pull origin master; git checkout origin/master; popd'
+
+Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+	puts "Updated the Buttons Submodule..."
+  puts "stdout is:" + stdout.read
+  puts "stderr is:" + stderr.read
+end

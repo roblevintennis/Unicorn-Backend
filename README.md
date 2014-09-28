@@ -25,7 +25,7 @@ As mentioned, both configure and compile; this is because they both share the sa
 		safetyFirst,//copy module dir over since we mutate
 		createOptionsMiddleware,
 		compassCompileMiddleware];
-    
+
 So, as the names imply, we creat an options file (using regex replacement on an initial _options partial using the custom values the client sends up), and then we simply compile that module.
 
 *Note that we plan to change the regex replacement once the Buttons-2 projec is implemented. Essentially, we've broken up the modules as includes (as opposed to types). So, per the client's request, we will instead comment out or uncomment the type includes *
@@ -33,13 +33,14 @@ So, as the names imply, we creat an options file (using regex replacement on an 
 ## Buttons
 
 The Buttons we use is a submodule of the buttons repo
-```shell
+```bash
 [submodule "buttons"]
 	path = buttons
 	url = https://github.com/alexwolfe/Buttons.git
 ```
+
 To update buttons submodule to very latest do:
-```shell
+```bash
 cd buttons
 git submodule init && git submodule update
 git pull origin master
@@ -92,7 +93,7 @@ Ensure you have the heroku workbench installed (see [nodejs](https://devcenter.h
 	heroku apps:info # outputs: === options-compiler
 
 If you don't have:
-	
+
 	heroku git:clone --app options-compiler
 
 
@@ -106,14 +107,14 @@ Add your keys and pull the latest:
 ### Running builder locally
 
 First start the options-compiler locally via foreman:
-	
+
 	foreman start web
 
 Now you need to hit this from a client. The best way to do this is to also run the Buttons client locally using the `gh-pages` branch. Go to another directory and checkout that repo:
-	
+
 	git clone git@github.com:alexwolfe/Buttons.git
 	git checkout gh-pages
-	
+
 In the `js/app/setup.js` file toggle the `serverUrl` property to point to localhost:
 
             //serverUrl: 'http://options-compiler.herokuapp.com',
@@ -138,24 +139,35 @@ As you fire these client requests, the server console logs will be output to the
 ## Pushing changes:
 
 	git add .; git commit -m"YOUR MSG"; git push heroku master; #Takes long since downloads build packs!
-	
+
 View Heroku Site
 
 	heroku open
-	
+
 
 ### Debugging remote tips
-	
+
 	heroku logs --tail # tail the remote logs
 	heroku run bash # open remote in local terminal
 
 
-### NOTES
+### Scheduler
 
-*TODO: Remove this section at some point*
+We have scheduled updates of the Buttons submodule per these instructions: [Heroku Scheduler Docs](https://devcenter.heroku.com/articles/scheduler).
 
-URL Example
+```bash
+# add scheduler
+heroku addons:add scheduler:standard
 
-Here's an example JSONP request payload:
+# open docs
+heroku addons:docs scheduler
+```
 
-http://options-compiler.herokuapp.com/download/buttons?name=buttons&btn-name=xxx&btn-namespace=.xxx&btn-glow-namespace=.glow&btn-glow-name=glow&btn-font-color=#666&btn-font-size=14px&btn-font-weight=300&btn-font-family[]=Helvetica Neue Light&btn-font-family[]=Helvetica Neue&btn-font-family[]=Helvetica&btn-font-family[]=Arial&btn-font-family[]=Lucida Grande&btn-font-family[]=sans-serif&btn-actions[0][name]=uno&btn-actions[0][color]=#ffffff&btn-actions[0][background]=#00a1cb&btn-actions[1][name]=dos&btn-actions[1][color]=#ffffff&btn-actions[1][background]=#7db500&btn-actions[2][name]=tres&btn-actions[2][color]=#ffffff&btn-actions[2][background]=#f18d05&btn-actions[3][name]=cuatro&btn-actions[3][color]=#ffffff&btn-actions[3][background]=#e54028&btn-actions[4][name]=cinco&btn-actions[4][color]=#ffffff&btn-actions[4][background]=#87318c&types[]=flat&types[]=glow&types[]=rounded&types[]=3d&types[]=border&types[]=pill&types[]=circle&types[]=dropdown&build_styleguide=false
+The script doesn't update the submodule reference, it just manually updates the checked out branch to the latest [master]. Test it locally with:
+
+```bash
+heroku run ./bin/update-buttons-submodule #from project root directory
+```
+
+
+
