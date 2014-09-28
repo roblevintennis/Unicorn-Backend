@@ -161,6 +161,9 @@ heroku addons:add scheduler:standard
 
 # open docs
 heroku addons:docs scheduler
+
+# open scheduler
+heroku addons:open scheduler
 ```
 
 The script doesn't update the submodule reference, it just manually updates the checked out branch to the latest [master]. Test it locally with:
