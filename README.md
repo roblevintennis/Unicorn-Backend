@@ -33,13 +33,14 @@ So, as the names imply, we creat an options file (using regex replacement on an 
 ## Buttons
 
 The Buttons we use is a submodule of the buttons repo
-```shell
+```bash
 [submodule "buttons"]
 	path = buttons
 	url = https://github.com/alexwolfe/Buttons.git
 ```
+
 To update buttons submodule to very latest do:
-```shell
+```bash
 cd buttons
 git submodule init && git submodule update
 git pull origin master
@@ -150,10 +151,26 @@ View Heroku Site
 	heroku run bash # open remote in local terminal
 
 
-### NOTES
+### Scheduler
+
+We have scheduled updates of the Buttons submodule per these instructions: [Heroku Scheduler Docs](https://devcenter.heroku.com/articles/scheduler).
+
+```bash
+# add scheduler
+heroku addons:add scheduler:standard
+
+# open docs
+heroku addons:docs scheduler
+```
+
+The script doesn't update the submodule reference, it just manually updates the checked out branch to the latest [master]. Test it locally with:
+
+```bash
+heroku run ./bin/update-buttons-submodule #from project root directory
+```
+
 
 *WE NEED TO KEEP FOLLOWING IN SYNC WITH BUTTONS MODULE:*
 
 	* `controllers/download.js` needs to have parallel file streams e.g. glow, 3d, etc.
 	* `lib/options.js` needs `allTypes` in `updateButtons` method to be parallel as well
-
