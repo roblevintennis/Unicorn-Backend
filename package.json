@@ -2,11 +2,11 @@
   "name": "Buttons-backend",
   "version": "0.0.1",
   "dependencies": {
+    "archiver": "~0.4.10",
     "express": "3.x",
-    "underscore": "1.x",
-    "grunt-contrib-compass": "~0.5.0",
     "fs-extra": "~0.6.4",
-    "archiver": "~0.4.10"
+    "grunt-contrib-compass": "~0.5.0",
+    "underscore": "1.x"
   },
   "engines": {
     "node": "0.10.x",

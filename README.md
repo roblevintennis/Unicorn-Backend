@@ -22,7 +22,7 @@ As mentioned, both configure and compile; this is because they both share the sa
 
 	var customMiddleware = [
 		//Ordering here is top to bottom
-		safetyFirst,//copy module dir over since we mutate
+		createSandbox,//copy module dir over since we mutate
 		createOptionsMiddleware,
 		compassCompileMiddleware];
 
@@ -152,10 +152,8 @@ View Heroku Site
 
 ### NOTES
 
-*TODO: Remove this section at some point*
+*WE NEED TO KEEP FOLLOWING IN SYNC WITH BUTTONS MODULE:*
 
-URL Example
+	* `controllers/download.js` needs to have parallel file streams e.g. glow, 3d, etc.
+	* `lib/options.js` needs `allTypes` in `updateButtons` method to be parallel as well
 
-Here's an example JSONP request payload:
-
-http://options-compiler.herokuapp.com/download/buttons?name=buttons&btn-name=xxx&btn-namespace=.xxx&btn-glow-namespace=.glow&btn-glow-name=glow&btn-font-color=#666&btn-font-size=14px&btn-font-weight=300&btn-font-family[]=Helvetica Neue Light&btn-font-family[]=Helvetica Neue&btn-font-family[]=Helvetica&btn-font-family[]=Arial&btn-font-family[]=Lucida Grande&btn-font-family[]=sans-serif&btn-actions[0][name]=uno&btn-actions[0][color]=#ffffff&btn-actions[0][background]=#00a1cb&btn-actions[1][name]=dos&btn-actions[1][color]=#ffffff&btn-actions[1][background]=#7db500&btn-actions[2][name]=tres&btn-actions[2][color]=#ffffff&btn-actions[2][background]=#f18d05&btn-actions[3][name]=cuatro&btn-actions[3][color]=#ffffff&btn-actions[3][background]=#e54028&btn-actions[4][name]=cinco&btn-actions[4][color]=#ffffff&btn-actions[4][background]=#87318c&types[]=flat&types[]=glow&types[]=rounded&types[]=3d&types[]=border&types[]=pill&types[]=circle&types[]=dropdown&build_styleguide=false

@@ -10,7 +10,7 @@ var express = require('express'),
     styleguide = require('./lib/styleguide').styleguide,
     compassCompileMiddleware = require('./lib/compiler').compassCompileMiddleware,
     createOptionsMiddleware = require('./lib/options').createOptionsMiddleware,
-    safetyFirst = require('./lib/safe.js').safetyFirst;
+    createSandbox = require('./lib/safe.js').createSandbox;
 
 app.configure(function() {
     'use strict';
@@ -28,7 +28,7 @@ app.enable('jsonp callback');
 // BEFORE the compass middleware does compilation.
 var customMiddleware = [
         //Ordering here is top to bottom
-        safetyFirst,//copy module dir over since we mutate ... safety first :)
+        createSandbox,//copy module dir over since we mutate ... safety first :)
         createOptionsMiddleware,
         compassCompileMiddleware
     ];
