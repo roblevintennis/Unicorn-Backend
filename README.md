@@ -184,7 +184,4 @@ heroku run ./bin/update-buttons-submodule #from project root directory
 ```
 
 
-*WE NEED TO KEEP FOLLOWING IN SYNC WITH BUTTONS MODULE:*
 
-	* `controllers/download.js` needs to have parallel file streams e.g. glow, 3d, etc.
-	* `lib/options.js` needs `allTypes` in `updateButtons` method to be parallel as well
