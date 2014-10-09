@@ -4,20 +4,67 @@
         <script src="vendor/js/jquery.js"></script>
         <script src="vendor/js/underscore.js"></script>
         <script src="vendor/js/backbone.js"></script>
+
+        <style type="text/css">
+        /*TODO MOVE OUT*/
+        .container {
+          width: 850px;
+          margin: 50px auto;
+          background-color: #fafafa;
+          padding: 50px;
+          border-radius: 5px;
+        }
+        .l-centered {
+          width: 800px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        .select-wrap {
+          width: 285px;
+          margin: 0 auto;
+          /*height: 34px;*/
+          overflow: hidden;
+          background: #ededed;
+          border: 1px solid #ccc;
+        }
+
+        .select-wrap select {
+          background: transparent;
+          width: 275px;
+          padding: 5px;
+          font-size: 16px;
+          border: 0;
+          height: 34px;
+          display: inline-block;
+          border-radius: 0;
+        }
+      </style>
     </head>
     <body>
+
       <div class="container">
-        <div class="module-client">
-          <h1>Tests</h1>
-          <form>
-            <select class="select-module">
-              <option value="buttons_download" selected="selected">Buttons&mdash;Download</option>
-              <option value="buttons_build" selected="selected">Buttons&mdash;Build</option>
-              <option value="grids_download" selected="selected">Grids&mdash;Download</option>
-              <option value="grids_build" selected="selected">Grids&mdash;Build</option>
-            </select>
-          </form>
-          <div class="module-selected">None</div>
+        <section class="l-centered page-title">
+          <h1>Options Compiler Test Page</h1>
+        </section>
+        <section class="l-centered page-title">
+          <div class="module-client">
+            <form>
+            <div class="select-wrap">
+              <select class="select-module">
+                <option value="buttons_download" selected="selected">Buttons&mdash;Download</option>
+                <option value="buttons_build" selected="selected">Buttons&mdash;Build</option>
+                <option value="grids_download" selected="selected">Grids&mdash;Download</option>
+                <option value="grids_build" selected="selected">Grids&mdash;Build</option>
+              </select>
+            </div>
+            </form>
+            </div>
+            <div class="module-selected">
+              <span class="selected-label">Selected: </span>
+              <span class="selection">N/A</span>
+            </div>
+          </section>
       </div>
 
 <<<<<<< HEAD
@@ -329,7 +376,6 @@ $(function() {
   $(".select-module").change(function () {
     var str = "";
     $("select option:selected").each(function() {
-      debugger;
       str += $(this).text() + " ";
 
       var module = $(this).attr('value');
@@ -348,7 +394,7 @@ $(function() {
 
 >>>>>>> WIP - setting up a dropdown to test various modules
     });
-    $('.module-selected').text(str);
+    $('.module-selected .selection').text(str);
   })
   .change();
 });
