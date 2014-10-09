@@ -6,11 +6,14 @@ A user comes in at: [Buttons Builder](http://alexwolfe.github.io/Buttons/) and c
 
 Upon clicking the "Download" button the following happens behind the scenes:
 
-* The Client POSTs (actually, we use jsonp so it's really a simulated post) options + module scss
-* The Server (options-compiler), detects it's a custom configuration, and then validates both the options and modules provided
-* The Server creates files with these custom options using regex replacement
-* The Server does a `compass compile` and zips file
-* Finally returns zip to client
+* The Client POSTs (actually, we use jsonp so it's really a simulated POST) options, modules to include, and the module type (e.g. Buttons or Grids)
+* The Server (options-compiler), takes this custom configuration data, and:
+	* first validates both the options and modules provided
+	* creates files with these custom options using regex replacement
+	* finally does a `compass compile` and zips the resulting files
+* Returns zip to client
+
+The `update` endpoint is similar in that it applies the passed up configuration, but it does not create a zip archive and is used to return the raw version of the compiled module's CSS
 
 ## More Details
 
@@ -32,6 +35,8 @@ So, as the names imply, we creat an options file (using regex replacement on an 
 
 ## Buttons
 
+*NOTE* This now is all done via the heroku scheduler
+*
 The Buttons we use is a submodule of the buttons repo
 ```bash
 [submodule "buttons"]
@@ -110,7 +115,11 @@ First start the options-compiler locally via foreman:
 
 	foreman start web
 
-Now you need to hit this from a client. The best way to do this is to also run the Buttons client locally using the `gh-pages` branch. Go to another directory and checkout that repo:
+Now you need to hit this from a client.
+
+TODO: Improve the test.html script and use that and make it module independent
+
+Currently, the best way to do this is to also run the Buttons client locally using the `gh-pages` branch. Go to another directory and checkout that repo:
 
 	git clone git@github.com:alexwolfe/Buttons.git
 	git checkout gh-pages
@@ -127,6 +136,8 @@ Now that you've updated to localhost you should be able to open the index.html p
 Since we're using jsonp, it "just works" even though the client is not behind a server.
 
 ## Viewing the Client HTTP Requests
+
+**BUTTONS SPECIFIC (we need to make this more generic and include running against other modules)**
 
 In Chrome, you'll likely want to set a breakpoint for:
 
