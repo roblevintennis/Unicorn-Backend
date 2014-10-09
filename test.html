@@ -1,18 +1,26 @@
 <html>
     <head>
         <title>jsonp test</title>
-        <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+        <script src="vendor/js/jquery.js"></script>
+        <script src="vendor/js/underscore.js"></script>
+        <script src="vendor/js/backbone.js"></script>
     </head>
     <body>
-        <p>JSONP test: </p>
-        <p><a href="#" id="testlink">Mutate Buttons Model (forces a backbone.sync)</a></p>
-        <p>Here's a /download test: </p>
-        <p><input id='download' type=button value="Download" /></p>
-        <p>Here's a /build test: </p>
-        <p><input id='update' type=button value="Update" /></p>
+      <div class="container">
+        <div class="module-client">
+          <h1>Tests</h1>
+          <form>
+            <select class="select-module">
+              <option value="buttons_download" selected="selected">Buttons&mdash;Download</option>
+              <option value="buttons_build" selected="selected">Buttons&mdash;Build</option>
+              <option value="grids_download" selected="selected">Grids&mdash;Download</option>
+              <option value="grids_build" selected="selected">Grids&mdash;Build</option>
+            </select>
+          </form>
+          <div class="module-selected">None</div>
+      </div>
 
+<<<<<<< HEAD
     <script type="text/javascript">
     $(function() {
 <<<<<<< HEAD
@@ -91,45 +99,120 @@
           'btn-font-weight': '300',
           'btn-font-family': ['Arial', 'sans-serif']
         };
+=======
+<script type="text/javascript">
+$(function() {
+>>>>>>> WIP - setting up a dropdown to test various modules
+
+    var defaultOptions = {
+      'btn-namespace': '.robs-buttons',
+      'btn-colors': [
+          {
+              name: 'primary',
+              background: '#00A1CB',
+              color: '#FFFFFF'
+          },
+          {
+              name: 'action',
+              background: '#7db500',
+              color: '#FFFFFF'
+          },
+          {
+              name: 'highlight',
+              background: '#F18D05',
+              color: '#FFFFFF'
+          },
+          {
+              name: 'caution',
+              background: '#E54028',
+              color: '#FFFFFF'
+          },
+          {
+              name: 'silly',
+              background: '#87318C',
+              color: '#FFFFFF'
+          }
+      ],
+      'btn-shapes': [
+        {
+          name: 'pill',
+          radius: '200px'
+        },
+        {
+          name: 'rounded',
+          radius: '3px'
+        }
+      ],
+      'btn-sizes': [
+        {
+          name: 'giant',
+          multiplier: '2'
+        },
+        {
+          name: 'jumbo',
+          multiplier: '1.5'
+        },
+        {
+          name: 'large',
+          multiplier: '1.25'
+        },
+        {
+          name: 'normal',
+          multiplier: '1'
+        },
+        {
+          name: 'small',
+          multiplier: '.75'
+        },
+        {
+          name: 'tiny',
+          multiplier: '.5'
+        }
+      ],
+      'types': ['border', 'shapes'],
+      // 'btn-name': 'button',
+      'btn-height': '40px',
+      'btn-bgcolor': '#EEE',
+      'btn-font-color': '#666',
+      'btn-font-size': '14px',
+      'btn-font-weight': '300',
+      'btn-font-family': ['Arial', 'sans-serif']
+    };
 
 
-        var JsonpModel = Backbone.Model.extend({
-            module: 'buttons',
-            defaults: defaultOptions,
-            type: null,
-            url: function() {
-                // return 'http://options-compiler.herokuapp.com/build/buttons';
-                return 'http://localhost:5000/build/'+this.module;
-            },
-            sync: function(method, model, options) {
-                var url = model.url()+"?callback=?";
-                var data = this.toJSON();
-                console.log("URL: ", url);
-                var params = _.extend({
-                  type: 'GET',
-                  dataType: 'jsonp',
-                  data: data,
-                  url: url
-                }, options);
-                return $.ajax(params);
-            },
-            parse: function(response) {
-                // parse can be invoked for fetch and save, in case of save it can be undefined so check before using
-                if (response && response[this.module]) {
-                    return {
-                        buttons: response[this.module],
-                        optionsScss: response.optionsScss
-                    };
-                }
+    var JsonpModel = Backbone.Model.extend({
+        module: 'buttons',
+        defaults: defaultOptions,
+        type: null,
+        url: function() {
+            // return 'http://options-compiler.herokuapp.com/build/buttons';
+            return 'http://localhost:5000/build/'+this.module;
+        },
+        sync: function(method, model, options) {
+            var url = model.url()+"?callback=?";
+            var data = this.toJSON();
+            console.log("URL: ", url);
+            var params = _.extend({
+              type: 'GET',
+              dataType: 'jsonp',
+              data: data,
+              url: url
+            }, options);
+            return $.ajax(params);
+        },
+        parse: function(response) {
+            // parse can be invoked for fetch and save, in case of save it can be undefined so check before using
+            if (response && response[this.module]) {
+                return {
+                    buttons: response[this.module],
+                    optionsScss: response.optionsScss
+                };
             }
-        });
+        }
+    });
 
-        $('#update').click(function(e) {
-          var buttons = new JsonpModel();
-          buttons.save();
-          console.log("Updated Buttons Backbone Model: ", buttons.toJSON());
-        });
 
+<<<<<<< HEAD
         // Test straight up download using buttons.toJSON as our query string for window.open
         $('#download').click(function(e) {
             var params = $.param(defaultOptions);
@@ -241,7 +324,35 @@
             var url = 'http://localhost:5000/download/buttons?'+params;
             window.open(url, 'Download');
         });
+=======
+  //Select the module to test from dropdown
+  $(".select-module").change(function () {
+    var str = "";
+    $("select option:selected").each(function() {
+      debugger;
+      str += $(this).text() + " ";
+
+      var module = $(this).attr('value');
+      if (module === "buttons_download") {
+        var params = $.param(defaultOptions);
+        var url = 'http://localhost:5000/download/buttons?'+params;
+        window.open(url, 'Download');
+
+      } else if (module === "buttons_build") {
+        var buttons = new JsonpModel();
+        buttons.save();
+        console.log("Updated Buttons Backbone Model: ", buttons.toJSON());
+      } else {
+        alert("Only done buttons so far :)");
+      }
+
+>>>>>>> WIP - setting up a dropdown to test various modules
     });
-    </script>
-    </body>
+    $('.module-selected').text(str);
+  })
+  .change();
+});
+</script>
+
+  </body>
 </html>
