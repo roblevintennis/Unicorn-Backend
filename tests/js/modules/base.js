@@ -27,6 +27,8 @@ var JsonpModel = Backbone.Model.extend({
       var responseObject = {};
       responseObject[this.module] = response[this.module];
       responseObject.optionsScss = response.optionsScss;
+
+      console.log(this.module+ "--RESPONSE OBJECT: ", responseObject);
       return responseObject;
     }
   }

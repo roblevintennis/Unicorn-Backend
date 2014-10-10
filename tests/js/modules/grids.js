@@ -11,7 +11,7 @@ GridsModule.gridsDefaultOptions = {
 };
 
 GridsModule.Model = JsonpModel.extend({
-  module: 'Grids',
+  module: 'grids',
   defaults: GridsModule.gridsDefaultOptions,
   url: function() {
     // return 'http://options-compiler.herokuapp.com/build/grids';
