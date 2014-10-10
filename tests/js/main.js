@@ -27,9 +27,13 @@ $(function() {
 
       //GRIDS MODULE
       'grids': [{
-        action: 'download'
+        action: 'download',
+        options: GridsModule.gridsDefaultOptions,
+        model: GridsModule.Model
       }, {
-        action: 'build'
+        action: 'build',
+        options: GridsModule.gridsDefaultOptions,
+        model: GridsModule.Model
       }]
     }
   };
