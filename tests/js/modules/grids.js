@@ -5,9 +5,13 @@
 var GridsModule = GridsModule || {};
 
 GridsModule.gridsDefaultOptions = {
-  'grid-fixed-grid-size': '1200px'
-  // $unicorn-grid-fixed-grid-size: 960px !default;
-  // $unicorn-grid-fixed-margin: 10px !default;
+	'grid-fixed-grid-size': '1200px',
+	'grid-num-columns': '24',
+	'grid-fixed-grid-size': '1234px',
+	'grid-fixed-margin': '15px',
+	'grid-responsive': 'enabled',
+	'grid-small-breakpoint': '567px',
+	'grid-tablet-breakpoint': '9876px'
 };
 
 GridsModule.Model = JsonpModel.extend({
