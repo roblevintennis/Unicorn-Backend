@@ -69,7 +69,7 @@ ButtonsModule.buttonDefaultOptions = {
       multiplier: '.5'
     }
   ],
-  'types': ['border', 'shapes'],
+  'types': ['shapes', 'sizes', 'border', 'borderless', 'raised', '3d', 'glow', 'dropdown', 'groups', 'wrapper'],
   'btn-height': '40px',
   'btn-bgcolor': '#EEE',
   'btn-font-color': '#666',
